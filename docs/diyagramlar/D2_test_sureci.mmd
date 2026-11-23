@@ -1,0 +1,16 @@
+%% D2 - Test süreci akış diyagramı (mermaid.live veya draw.io ile PNG'ye çevrilebilir)
+flowchart LR
+    A[Dokümantasyon<br/>+ standartlar] --> B[Gereksinim tablosu T1]
+    B --> C[Eşdeğerlik sınıfları T2]
+    B --> D[Sınır değerler T3]
+    C --> E[Test senaryoları T4]
+    D --> E
+    E --> F[pytest çalıştır]
+    F --> G{Sonuç}
+    G -- PASS --> J[Sonuç özeti T5 + D5]
+    G -- FAIL --> H{Test verisi /<br/>beklenen doğru mu?}
+    H -- Hayır --> E
+    H -- Evet --> I[Bulgu T6<br/>xfail ile işaretle]
+    I --> F
+    J --> K[Rapor]
+    I --> K

@@ -1,0 +1,33 @@
+[project]
+name = "proje"
+version = "0.1.0"
+description = "Kara-kutu birim testleri (EP + BVA) - pyvalidators"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "validators[crypto-eth-addresses]==0.36.0",
+]
+
+[dependency-groups]
+dev = [
+    "matplotlib>=3.11.2",
+    "openpyxl>=3.1.5",
+    "pytest>=9.2.0",
+    "pytest-html>=4.2.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+# xunit1: test başına <properties> (girdi, beklenen, gerçekleşen...) XML'e yazılır
+junit_family = "xunit1"
+xfail_strict = true
+addopts = [
+    "-v",
+    "--junitxml=reports/sonuc.xml",
+    "--html=reports/rapor.html",
+    "--self-contained-html",
+]
+markers = [
+    "tc(sinif): test senaryosunun eşdeğerlik sınıfı / sınır değeri (T4 tablosu için)",
+]

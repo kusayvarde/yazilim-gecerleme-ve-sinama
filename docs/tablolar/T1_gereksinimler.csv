@@ -1,0 +1,55 @@
+﻿ID;Fonksiyon;Gereksinim;Örnek girdi;Beklenen çıktı;Kaynak;Sınayan testler
+REQ-IPV4-01;ipv4;Adres nokta ile ayrılmış tam 4 oktetten oluşur;'192.168.1';ValidationError;Standart (RFC 791);EP-01, EP-10, EP-11, EP-25, BVA-10..12
+REQ-IPV4-02;ipv4;Her oktet 0–255 aralığında ondalık sayıdır;'256.1.1.1';ValidationError;Standart (RFC 791), Doküman örneği;EP-09, EP-14, EP-27, BVA-01..09, BVA-19
+REQ-IPV4-03;ipv4;Yalnızca rakam ve nokta içerir (harf, boşluk, özel karakter yok);'192.168.a.1';ValidationError;Standart;EP-12, EP-16, EP-17
+REQ-IPV4-04;ipv4;Oktetlerde baştaki sıfır reddedilir;'01.2.3.4';ValidationError;Doküman;EP-15
+REQ-IPV4-05;ipv4;Boş dize geçersizdir;'';ValidationError;Doküman;EP-13
+REQ-IPV4-06;ipv4;cidr=True (varsayılan) iken /0–/32 CIDR öneki kabul edilir;'10.0.0.0/8';True;Doküman (cidr parametresi);EP-02, EP-18, EP-26, BVA-13..18
+REQ-IPV4-07;ipv4;strict=True iken CIDR gösterimi zorunludur;'1.2.3.4' (strict=True);ValidationError;Doküman (strict parametresi);EP-03, EP-19, DT-03, DT-04
+REQ-IPV4-08;ipv4;cidr=False iken CIDR gösterimi kabul edilmez;'10.0.0.0/8' (cidr=False);ValidationError;Doküman (cidr parametresi);EP-20, DT-01, DT-02, DT-05..08
+REQ-IPV4-09;ipv4;private=True yalnız private/local/loopback/broadcast, private=False yalnız public adres kabul eder;'8.8.8.8' (private=True);ValidationError;Doküman (private parametresi);EP-04, EP-05, EP-07, EP-08, EP-21, EP-22
+REQ-IPV4-10;ipv4;host_bit=False iken host bitleri set olan ağ adresi reddedilir;'192.168.1.1/24' (host_bit=False);ValidationError;Doküman (host_bit parametresi);EP-06, EP-23
+REQ-IPV4-11;ipv4;IPv6 adresi IPv4 olarak kabul edilmez;'::1';ValidationError;Doküman;EP-24
+REQ-IPV6-01;ipv6;Adres ':' ile ayrılmış 8 gruptan oluşur;'1:2:3:4:5:6:7';ValidationError;Standart (RFC 4291);EP-01, EP-10, BVA-01..03
+REQ-IPV6-02;ipv6;Her grup 1–4 hex karakterdir (büyük/küçük harf serbest);'::fffff';ValidationError;Standart (RFC 4291);EP-06, EP-11, EP-12, BVA-06..08, BVA-15, BVA-16, BVA-18
+REQ-IPV6-03;ipv6;'::' en fazla bir kez kullanılır ve en az bir sıfır grubunu temsil eder;'2001::db8::1';ValidationError;Standart (RFC 4291);EP-02, EP-03, EP-07, EP-13, EP-20, BVA-04, BVA-05, BVA-17
+REQ-IPV6-04;ipv6;IPv4-mapped IPv6 adresleri kabul edilir;'::ffff:192.0.2.128';True;Doküman;EP-04
+REQ-IPV6-05;ipv6;cidr=True iken /0–/128 CIDR öneki kabul edilir;'::1/129';ValidationError;Doküman (cidr), Standart;EP-05, EP-14, EP-22, BVA-09..14
+REQ-IPV6-06;ipv6;strict=True CIDR'ı zorunlu kılar, cidr=False CIDR'ı yasaklar;'::1' (strict=True);ValidationError;Doküman (strict, cidr);EP-08, EP-17, EP-19
+REQ-IPV6-07;ipv6;host_bit=False iken host bitleri set olan ağ adresi reddedilir;'2001:db8::1/32' (host_bit=False);ValidationError;Doküman (host_bit);EP-09, EP-18
+REQ-IPV6-08;ipv6;IPv4 adresi, boş dize ve boşluklu dize geçersizdir;'abc.0.0.1';ValidationError;Doküman örneği;EP-15, EP-16, EP-21, EP-23
+REQ-CRON-01;cron;İfade boşlukla ayrılmış tam 5 alandan oluşur;'* * * *';ValidationError;Unix cron (doküman belirtmiyor);EP-01, EP-07, EP-08, BVA-19..21
+REQ-CRON-02;cron;Dakika alanı 0–59;'60 * * * *';ValidationError;Unix cron;EP-09, BVA-01..04, BVA-22, BVA-23
+REQ-CRON-03;cron;Saat alanı 0–23;'* 24 * * *';ValidationError;Unix cron;BVA-05..07, BVA-24..26
+REQ-CRON-04;cron;Ayın günü alanı 1–31;'* * 32 * *';ValidationError;Unix cron;BVA-08..11, BVA-27, BVA-28
+REQ-CRON-05;cron;Ay alanı 1–12;'* * * 13 *';ValidationError;Unix cron;BVA-12..15, BVA-29, BVA-30
+REQ-CRON-06;cron;Haftanın günü alanı 0–7;'* * * * 8';ValidationError;Unix cron;EP-05, BVA-16..18, BVA-31..33
+REQ-CRON-07;cron;Alan sözdizimi: *, */n (n≥1), a-b (a≤b), a,b listesi, a-b/n;'30-20 * * * *';ValidationError;Doküman örneği + Unix cron (GEREKSİNİM BELİRSİZLİĞİ);EP-02..04, EP-06, EP-10, EP-13, EP-14
+REQ-CRON-08;cron;Geçersiz karakter içeren veya boş ifade geçersizdir;'a * * * *';ValidationError;Unix cron;EP-11, EP-12
+REQ-BTC-01;btc_address;Legacy adres 1 (P2PKH) veya 3 (P2SH) ile başlar ve Base58 karakter kümesindedir (0 O I l yok);'4Cwgr2g7…';ValidationError;Doküman + Base58Check;EP-01, EP-02, EP-06..09, EP-11
+REQ-BTC-02;btc_address;Legacy adreslerde Base58Check checksum tam doğrulanır;'3Cwgr…FZfC68';ValidationError;Doküman ('tam doğrulama');EP-05, EP-14
+REQ-BTC-03;btc_address;SegWit adres bc1/tb1 ile başlar ve bech32 karakter kümesindedir (regex ile tahmin);'bx1qar0s…';ValidationError;Doküman ('regexp ile makul tahmin') + BIP-173;EP-03, EP-04, EP-10, EP-12
+REQ-BTC-04;btc_address;SegWit veri kısmı 14–74 karakterdir;'bc1' + 'q'×75;ValidationError;Test rehberi (regex tahmini);BVA-01..06
+REQ-BTC-05;btc_address;Boş dize geçersizdir;'';ValidationError;Doküman;EP-13
+REQ-ETH-01;eth_address;Adres 0x öneki + tam 40 hex karakterdir;'0x' + 'a'×41;ValidationError;Doküman + EIP-55;EP-07..09, BVA-01..03
+REQ-ETH-02;eth_address;Tümü küçük veya tümü büyük harfli adres checksum'sız geçerlidir;'0x9cc14ba4…';True;Doküman örneği + EIP-55;EP-01, EP-02
+REQ-ETH-03;eth_address;Karışık harfli adreste EIP-55 checksum doğru olmalıdır;'0x8Ba1f1…DBa72';ValidationError;Doküman örneği + EIP-55;EP-03..06
+REQ-ETH-04;eth_address;Boş dize geçersizdir;'';ValidationError;Doküman;EP-10
+REQ-TRX-01;trx_address;Adres büyük 'T' ile başlar;'ALjfbT…';ValidationError;Base58Check (sürüm baytı 0x41);EP-04, EP-05, EP-08
+REQ-TRX-02;trx_address;Adres Base58 karakter kümesindedir (0 O I l yok);'TLjfbTbpZY0Q…';ValidationError;Base58Check;EP-06
+REQ-TRX-03;trx_address;Adres toplam 34 karakterdir;'TR2G7Rm4…' (33);ValidationError;Doküman örneği + Base58Check;EP-10, BVA-01..03
+REQ-TRX-04;trx_address;Base58Check checksum doğru olmalıdır;son karakteri değişmiş adres;ValidationError;Doküman ('tam doğrulama') + Base58Check;EP-01..03, EP-07
+REQ-TRX-05;trx_address;Boş dize geçersizdir;'';ValidationError;Doküman;EP-09
+REQ-BSC-01;bsc_address;Adres 0x öneki + tam 40 hex karakterdir;'0x4g5acf…';ValidationError;Doküman örneği;EP-01, EP-02, EP-04..06, EP-08, BVA-01..03
+REQ-BSC-02;bsc_address;"Checksum denetimi yoktur; karışık harf serbesttir";checksum'ı bozuk karışık adres;True;Test rehberi yorumu (doküman belirtmiyor);EP-03
+REQ-BSC-03;bsc_address;Boş dize geçersizdir;'';ValidationError;Doküman;EP-07
+REQ-MAC-01;mac_address;Adres 6 gruptan oluşur, her grup tam 2 hex karakterdir;'00:00:00:00:00';ValidationError;Doküman örneği + IEEE 802;EP-01, EP-03, EP-05, EP-10, BVA-01..06
+REQ-MAC-02;mac_address;Ayırıcı ':' veya '-' olur ve karışık kullanılamaz;'01:23-45:67:ab:CD';ValidationError;Doküman örneği + IEEE 802;EP-02, EP-04, EP-06..08
+REQ-MAC-03;mac_address;Boş dize geçersizdir;'';ValidationError;Doküman;EP-09
+REQ-UUID-01;uuid;Dize 8-4-4-4-12 hex biçimindedir (toplam 36 karakter);'2bc1c94f 0deb-…';ValidationError;Doküman örneği + RFC 9562;EP-01, EP-02, EP-05, EP-06, EP-08..11, EP-14, BVA-01..03
+REQ-UUID-02;uuid;UUID sürüm 4 olmalıdır;uuid1() dizesi;ValidationError;Doküman ('UUID-v4 dizesi');EP-12, EP-13
+REQ-UUID-03;uuid;str ya da uuid.UUID nesnesi kabul edilir;uuid.uuid4();True;Doküman ('UUID dizesi veya nesnesi');EP-03, EP-04
+REQ-UUID-04;uuid;Boş dize geçersizdir;'';ValidationError;Doküman;EP-07
+REQ-HASH-01;md5, sha1, sha224, sha256, sha384, sha512;Özet tam N hex karakterdir (md5 32, sha1 40, sha224 56, sha256 64, sha384 96, sha512 128);'a'×(N+1);ValidationError;Doküman + RFC 1321 / FIPS 180-4;EP-01, EP-08, EP-09, BVA-01..03
+REQ-HASH-02;md5, sha1, sha224, sha256, sha384, sha512;"Yalnızca hex karakter içerir; harf büyüklüğü fark etmez";'900zz11';ValidationError;Doküman örneği;EP-02..06, EP-10
+REQ-HASH-03;md5, sha1, sha224, sha256, sha384, sha512;Boş dize geçersizdir;'';ValidationError;Doküman;EP-07
