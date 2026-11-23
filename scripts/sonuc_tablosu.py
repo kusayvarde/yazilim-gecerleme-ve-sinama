@@ -44,6 +44,25 @@ def csv_oku(yol):
         return list(csv.reader(f, delimiter=";"))
 
 
+def alan_tablolari_oku(onek):
+    """docs/tablolar/<onek>_<alan>.csv dosyalarını (her ekip üyesi bir dosya) tek tabloda birleştirir.
+
+    Başlık ilk dosyadan alınır; tüm dosyaların başlığı aynı olmalıdır.
+    """
+    dosyalar = sorted(TABLOLAR.glob(f"{onek}_*.csv"))
+    if not dosyalar:
+        sys.exit(f"HATA: {TABLOLAR.relative_to(KOK)} içinde {onek}_<alan>.csv bulunamadı.")
+    baslik, satirlar = None, []
+    for yol in dosyalar:
+        tablo = csv_oku(yol)
+        if baslik is None:
+            baslik = tablo[0]
+        elif tablo[0] != baslik:
+            sys.exit(f"HATA: {yol.name} başlığı {dosyalar[0].name} ile aynı değil.")
+        satirlar += [s for s in tablo[1:] if any(h.strip() for h in s)]
+    return [baslik] + satirlar
+
+
 def csv_yaz(yol, satirlar):
     with yol.open("w", newline="", encoding="utf-8-sig") as f:
         csv.writer(f, delimiter=";").writerows(satirlar)
@@ -230,8 +249,8 @@ def sayfa_ekle(wb, ad, baslik, satirlar, genislik, toplam=None, not_=None):
 
 # ============================================================ ana akış
 def main():
-    t1 = csv_oku(TABLOLAR / "T1_gereksinimler.csv")
-    t6 = csv_oku(TABLOLAR / "T6_bulgular.csv")
+    t1 = alan_tablolari_oku("T1")
+    t6 = alan_tablolari_oku("T6")
 
     # Fonksiyonları T1'deki sıraya diz (ipv4, ipv6, cron, ..., hash'ler)
     sira = []
