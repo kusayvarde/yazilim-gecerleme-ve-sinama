@@ -14,6 +14,7 @@ uv sync                                    # ortamı kur
 uv run pytest                              # tüm testler -> reports/sonuc.xml + reports/rapor.html
 uv run python scripts/sonuc_tablosu.py     # -> reports/tablolar.xlsx (T1, T2, T3, DT, T4a, T4b, T5, T6) + izlenebilirlik kontrolü
 uv run python scripts/sonuc_grafigi.py     # -> reports/D5_sonuc_grafigi.png
+uv run python scripts/diyagramlar.py       # -> docs/diyagramlar/D1, D3, D4 (PNG)
 ```
 
 Tek bir alanı çalıştırmak için: `uv run pytest tests/network_crypto`
@@ -26,12 +27,14 @@ tests/yardimci.py        tc() senaryo tanımı, Base58Check / EIP-55 veri üreti
 tests/network_crypto/    Network & Crypto alanı (15 fonksiyon)
 tests/<kisi_alani>/      diğer ekip üyelerinin alanları (aynı düzen)
 scripts/                 JUnit XML -> CSV tabloları ve grafik
-docs/tablolar/           elle yazılan tablolar (T1 gereksinimler, T6 bulgular)
+docs/tablolar/           elle yazılan tablolar, alan başına: T1_<alan>.csv, T6_<alan>.csv
 docs/diyagramlar/        D1–D5 diyagramları
 reports/                 üretilen çıktılar (git'e girmez)
 ```
 
 ## Ekip kuralları
+
+Tam kurallar, Git iş akışı (master ← dev ← kişi dalları) ve AI agent talimatları: **AGENTS.md**.
 
 1. **Test ID:** `TC-<FONK>-<EP|BVA|DT>-<no>`, ör. `TC-IPV4-BVA-03`. Koddaki
    `tc("TC-...")` ID'si tablodaki ID ile birebir aynıdır.
@@ -49,6 +52,6 @@ reports/                 üretilen çıktılar (git'e girmez)
        dogrula("ipv4", girdi, parametreler, beklenen)
    ```
 4. **Başarısız test silinmez.** Test verisi doğruysa `tc(..., bug="BUG-xx: ...")`
-   ile strict xfail olarak işaretlenir ve `docs/tablolar/T6_bulgular.csv`'ye yazılır.
+   ile strict xfail olarak işaretlenir ve kendi `docs/tablolar/T6_<alan>.csv` dosyasına yazılır.
 5. **Geçerlilik verisi standarttan doğrulanır** (Base58Check, EIP-55, BIP-173);
    `tests/yardimci.py`'deki üreticiler kütüphaneden bağımsızdır.
