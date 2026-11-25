@@ -1,0 +1,69 @@
+﻿ID;Fonksiyon;Gereksinim;Örnek girdi;Beklenen çıktı;Kaynak;Sınayan testler
+REQ-DOMAIN-01;domain;Alan adı noktayla ayrılmış en az iki etiketten oluşur (TLD zorunlu);'localhost';ValidationError;Standart (RFC 1034/1035), GEREKSİNİM BELİRSİZLİĞİ;EP-01, EP-02, EP-12, EP-26
+REQ-DOMAIN-02;domain;"Etiket yalnızca harf, rakam ve tire içerir; tire ile başlayıp bitmez; rakamla başlayabilir; harf büyüklüğü fark etmez";'-example.com';ValidationError;Standart (RFC 1034, RFC 1123);EP-03, EP-04, EP-05, EP-06, EP-13, EP-14, EP-16, EP-24
+REQ-DOMAIN-03;domain;"Boş etiket (baştaki/çift nokta) ve boş dize geçersizdir; en kısa etiket 1 karakterdir";'example..com';ValidationError;Standart (RFC 1035);EP-11, EP-18, EP-19, BVA-04..06
+REQ-DOMAIN-04;domain;Etiket en çok 63, toplam ad en çok 253 karakterdir;'a'×64 + '.com';ValidationError;Standart (RFC 1035);BVA-01..03, BVA-07..09
+REQ-DOMAIN-05;domain;TLD tamamen sayısal olamaz;'example.123';ValidationError;Standart (RFC 3696 §2);EP-23
+REQ-DOMAIN-06;domain;Şema, port ve yol içermez;'example.com/';ValidationError;Doküman örneği;EP-20, EP-21, EP-27
+REQ-DOMAIN-07;domain;IDN desteklenir (punycode ve Unicode);'xn----gtbspbbmkef.xn--p1ai';True;Doküman örneği;EP-10, EP-28
+REQ-DOMAIN-08;domain;consider_tld=True iken yalnızca IANA TLD'leri kabul edilir;'example.invalidtld' (consider_tld=True);ValidationError;Doküman (consider_tld parametresi);EP-07, EP-22
+REQ-DOMAIN-09;domain;rfc_1034=True iken sondaki nokta kabul edilir, False iken reddedilir;'example.com.';True (rfc_1034=True);Doküman (rfc_1034 parametresi);EP-08, EP-17, DT-01..04
+REQ-DOMAIN-10;domain;rfc_2782=True iken alt çizgi (SRV adı) kabul edilir, False iken reddedilir;'_sip._tcp.example.com';True (rfc_2782=True);Doküman (rfc_2782 parametresi);EP-09, EP-15, EP-25
+REQ-HOSTNAME-01;hostname;"Ad etiketleri harf, rakam ve tire içerir; tire ile başlamaz, boşluk içermez; tek etiketli ad geçerlidir";'this-pc';True;Doküman örneği + Standart (RFC 1123);EP-01, EP-14, EP-15, EP-29, EP-31
+REQ-HOSTNAME-02;hostname;Etiket en çok 63, toplam ad en çok 253 karakterdir;'a'×64;ValidationError;Standart (RFC 1035);BVA-07..12
+REQ-HOSTNAME-03;hostname;İsteğe bağlı port sayısaldır ve 1–65535 aralığındadır (0 ayrılmıştır);'example.com:65536';ValidationError;Doküman örneği + Standart (RFC 6335), GEREKSİNİM BELİRSİZLİĞİ;EP-02, EP-11, EP-12, EP-13, EP-28, EP-30, EP-32, EP-34, EP-36, BVA-01..06
+REQ-HOSTNAME-04;hostname;"Geçerli IPv4 adresi kabul edilir; geçersiz IPv4 reddedilir";'999.1.1.1';ValidationError;Doküman örneği + Standart (RFC 791);EP-18, EP-32, EP-33
+REQ-HOSTNAME-05;hostname;IPv6 adresi köşeli parantezli (portlu/portsuz) veya köşelisiz kabul edilir;'[2001:db8::1]';True;Doküman örneği + Standart (RFC 3986 §3.2.2, RFC 4291);EP-03, EP-04, EP-19, EP-34, EP-35, EP-37
+REQ-HOSTNAME-06;hostname;Boş dize, şema ve yol içeren girdi geçersizdir;'http://example.com';ValidationError;Standart (RFC 3986);EP-10, EP-16, EP-17
+REQ-HOSTNAME-07;hostname;may_have_port=False iken port içeren girdi reddedilir;'example.com:80' (may_have_port=False);ValidationError;Doküman (may_have_port parametresi);EP-20
+REQ-HOSTNAME-08;hostname;skip_ipv4_addr / skip_ipv6_addr=True iken ilgili adres türü reddedilir;'[::1]:22' (skip_ipv6_addr=True);ValidationError;Doküman (skip_ipv4_addr, skip_ipv6_addr);EP-21, EP-22
+REQ-HOSTNAME-09;hostname;maybe_simple=False iken tek etiketli ad reddedilir;'this-pc' (maybe_simple=False);ValidationError;Doküman (maybe_simple parametresi);EP-23
+REQ-HOSTNAME-10;hostname;private=True yalnız özel, private=False yalnız genel IP kabul eder;'8.8.8.8' (private=True);ValidationError;Doküman (private parametresi);EP-06, EP-07, EP-24, EP-25
+REQ-HOSTNAME-11;hostname;consider_tld=True iken yalnızca IANA TLD'leri kabul edilir;'example.invalidtld' (consider_tld=True);ValidationError;Doküman (consider_tld parametresi);EP-05, EP-26
+REQ-HOSTNAME-12;hostname;rfc_1034=True sondaki noktayı, rfc_2782=True alt çizgili SRV adını kabul eder;'example.com.' (rfc_1034=True);True;Doküman (rfc_1034, rfc_2782 parametreleri);EP-08, EP-09, EP-27
+REQ-COUNTRY_CODE-01;country_code;iso_format=auto iken alpha-2, alpha-3 ve numeric ISO 3166-1 kodları tanınır;'USA';True;Doküman örneği + Standart (ISO 3166-1);EP-01, EP-12
+REQ-COUNTRY_CODE-02;country_code;iso_format alpha2/alpha3/numeric seçilirse yalnızca o biçim kabul edilir;'GB' (iso_format=alpha3);ValidationError;Doküman (iso_format parametresi);EP-08, EP-11, EP-13, EP-14, EP-15
+REQ-COUNTRY_CODE-03;country_code;Atanmamış, yanlış uzunlukta veya hatalı karakterli kod reddedilir;'ZZ';ValidationError;Standart (ISO 3166-1);EP-04, EP-06, EP-07, EP-09, EP-10, BVA-01..04
+REQ-COUNTRY_CODE-04;country_code;"Varsayılan olarak büyük/küçük harf duyarlıdır; ignore_case=True ile duyarsız";'us';ValidationError;Doküman (ignore_case parametresi);EP-02, EP-05
+REQ-COUNTRY_CODE-05;country_code;Numeric kod 3 basamaktır (baştaki sıfır korunur) ve 004–894 aralığındadır;'895' (numeric);ValidationError;Standart (ISO 3166-1 numeric);EP-03, BVA-05..08
+REQ-CURRENCY-01;currency;Para birimi kodu 3 büyük harfli ISO 4217 kodudur (XXX, XTS gibi özel kodlar dahil);'USD';True;Doküman örneği + Standart (ISO 4217);EP-01, EP-04, EP-11, EP-12, BVA-01..03
+REQ-CURRENCY-02;currency;Atanmamış kod, rakamlı ve boş girdi reddedilir;'ZWX';ValidationError;Doküman örneği;EP-05, EP-07, EP-09
+REQ-CURRENCY-03;currency;"Varsayılan olarak büyük/küçük harf duyarlıdır; ignore_case=True ile duyarsız";'usd';ValidationError;Doküman (ignore_case parametresi);EP-02, EP-06
+REQ-CURRENCY-04;currency;Semboller yalnızca skip_symbols=False iken doğrulanır;'$' (skip_symbols=False);True;Doküman (skip_symbols parametresi);EP-03, EP-08, EP-10
+REQ-CALLING_CODE-01;calling_code;Çağrı kodu '+' ile başlar ve 1–3 rakamdan oluşur;'+1234';ValidationError;Doküman örneği + Standart (ITU-T E.164);EP-01, EP-02, EP-03, EP-09, BVA-01..05
+REQ-CALLING_CODE-02;calling_code;Atanmamış ülke kodu reddedilir;'+999';ValidationError;Standart (ITU-T E.164);EP-05
+REQ-CALLING_CODE-03;calling_code;Boş dize, harf, boşluk ve çift '+' içeren girdi reddedilir;'-31';ValidationError;Doküman örneği;EP-04, EP-06, EP-07, EP-08, EP-10
+REQ-IBAN-01;iban;IBAN kontrol basamakları mod-97-10 kuralını sağlar;'DE89370400440532013001';ValidationError;Doküman örneği + Standart (ISO 13616);EP-01, EP-02, EP-03, EP-04, EP-05, EP-07, EP-13
+REQ-IBAN-02;iban;Ülke kodu ISO 13616 kaydında bulunan 2 büyük harftir;'XX…' (mod-97 doğru);ValidationError;Standart (ISO 13616);EP-08, EP-11
+REQ-IBAN-03;iban;IBAN uzunluğu ülkeye özgüdür (ör. Almanya 22);Almanya 21 / 23 karakter;ValidationError;Standart (ISO 13616);BVA-01..03
+REQ-IBAN-04;iban;Elektronik biçim: büyük harf, boşluksuz, özel karaktersiz;'DE89 3704 …';ValidationError;Standart (ISO 13616), GEREKSİNİM BELİRSİZLİĞİ;EP-09, EP-10, EP-12
+REQ-IBAN-05;iban;Boş veya anlamsız girdi geçersizdir;'123456';ValidationError;Doküman örneği;EP-06, EP-14
+REQ-BETWEEN-01;between;Değer [min_val, max_val] kapalı aralığındaysa True (sayı, metin, tarih);5 (min_val=1, max_val=10);True;Doküman örneği;EP-01, EP-03, EP-04, EP-08, EP-09, EP-11
+REQ-BETWEEN-02;between;Sınır değerlerinin kendisi aralığa dahildir;10 (min_val=1, max_val=10);True;Doküman;BVA-01..06
+REQ-BETWEEN-03;between;Değer aralığın dışındaysa ValidationError;11 (min_val=1, max_val=10);ValidationError;Doküman örneği;EP-05, EP-06, EP-07, EP-10
+REQ-BETWEEN-04;between;"Verilmeyen sınır denetlenmez; ikisi de yoksa sonuç her zaman True";5 (sınır yok);True;Doküman (Note);EP-02
+REQ-LENGTH-01;length;Dize uzunluğu [min_val, max_val] aralığındaysa True (Unicode karakter sayısıyla);'abcd' (min_val=2, max_val=6);True;Doküman örneği;EP-01, EP-04, EP-08, EP-09, BVA-01..06
+REQ-LENGTH-02;length;Uzunluk aralığın dışındaysa ValidationError;'a' (min_val=2);ValidationError;Doküman örneği;EP-05, EP-06, EP-07, EP-10
+REQ-LENGTH-03;length;"Verilmeyen sınır denetlenmez; boş dize min_val=0 ile geçerlidir";'' (min_val=0);True;Doküman;EP-02, EP-03
+REQ-SLUG-01;slug;Slug yalnızca küçük harf, rakam ve tire içerir;'my-slug-2134';True;Doküman örneği;EP-01, EP-02, EP-09
+REQ-SLUG-02;slug;Büyük harf, alt çizgi, boşluk ve nokta geçersizdir;'my.slug';ValidationError;Doküman örneği;EP-04, EP-07, EP-08, EP-10
+REQ-SLUG-03;slug;Slug tire ile başlayıp bitemez;'-abc';ValidationError;Doküman;EP-05, EP-06
+REQ-SLUG-04;slug;"Boş dize geçersizdir; en kısa geçerli slug 1 karakterdir";'';ValidationError;Ekip kuralı (doküman belirtmiyor);EP-03, BVA-01..03
+REQ-BASE16-01;base16;Yalnızca hex karakterleri (0-9, A-F, a-f) içerir;'a3f4Z1';ValidationError;Doküman örneği + Standart (RFC 4648 §8);EP-01, EP-02, EP-04, EP-05, EP-06, EP-08, EP-09
+REQ-BASE16-02;base16;Uzunluk çifttir (bayt başına 2 karakter);'abc';ValidationError;Standart (RFC 4648 §8), GEREKSİNİM BELİRSİZLİĞİ;EP-07, BVA-01..03
+REQ-BASE16-03;base16;Boş dize geçersizdir;'';ValidationError;Ekip kuralı (doküman belirtmiyor);EP-03
+REQ-BASE32-01;base32;Alfabe büyük harf A-Z ve 2-7'dir;'MfZW3zLT9Q======';ValidationError;Doküman örneği + Standart (RFC 4648 §6);EP-01, EP-02, EP-03, EP-05, EP-06, EP-09, EP-10
+REQ-BASE32-02;base32;Uzunluk '=' dolgusuyla 8'in katıdır;'MZXW6';ValidationError;Standart (RFC 4648 §6), GEREKSİNİM BELİRSİZLİĞİ;EP-07, EP-08, BVA-01..03
+REQ-BASE32-03;base32;Boş dize geçersizdir;'';ValidationError;Ekip kuralı (doküman belirtmiyor);EP-04
+REQ-BASE58-01;base58;Alfabe 58 karakterdir (0, O, I, l yok);'ab0c';ValidationError;Doküman örneği + Standart (Bitcoin Base58);EP-01, EP-02, EP-04, EP-05, EP-06, EP-07, EP-09, EP-10
+REQ-BASE58-02;base58;"Boşluk ve boş dize geçersizdir; en kısa geçerli dize 1 karakterdir";'';ValidationError;Ekip kuralı (doküman belirtmiyor);EP-03, EP-08, BVA-01..03
+REQ-BASE64-01;base64;Alfabe A-Z, a-z, 0-9, '+', '/' ve '=' dolgusudur (URL-güvenli '-' '_' değil);'Zm-_';ValidationError;Doküman örneği + Standart (RFC 4648 §4);EP-01, EP-02, EP-03, EP-05, EP-06, EP-09
+REQ-BASE64-02;base64;"Uzunluk 4'ün katıdır; dolgu yalnızca sonda ve en çok 2 karakterdir";'cUSECm5YzcXJwP';ValidationError;Doküman örneği + Standart (RFC 4648 §4);EP-07, EP-08, EP-10, BVA-01..03
+REQ-BASE64-03;base64;Boş dize geçersizdir;'';ValidationError;Ekip kuralı (doküman belirtmiyor);EP-04
+REQ-IND_AADHAR-01;ind_aadhar;Aadhaar 12 basamaktır ve '4-4-4' boşluklu biçimde yazılır;'3675 9834 6015';True;Doküman örneği, GEREKSİNİM BELİRSİZLİĞİ (boşluksuz biçim);EP-01, EP-02, EP-07, BVA-04..06
+REQ-IND_AADHAR-02;ind_aadhar;İlk basamak 2–9'dur (0 ve 1 olamaz);'0345 6789 0127';ValidationError;Standart (UIDAI);EP-04, BVA-01..03
+REQ-IND_AADHAR-03;ind_aadhar;Son basamak Verhoeff kontrol basamağıdır;bozuk kontrol basamaklı numara;ValidationError;Standart (UIDAI, Verhoeff algoritması);EP-03
+REQ-IND_AADHAR-04;ind_aadhar;Rakam dışı karakter içeren veya boş girdi geçersizdir;'3675 ABVC 2133';ValidationError;Doküman örneği;EP-05, EP-06, EP-08
+REQ-IND_PAN-01;ind_pan;PAN 5 büyük harf + 4 rakam + 1 büyük harf biçimindedir;'ABCDE9999K';True;Doküman örneği + Standart (Gelir Vergisi İdaresi);EP-01, EP-03, EP-04, EP-05, EP-06, EP-08, EP-09
+REQ-IND_PAN-02;ind_pan;PAN tam 10 karakterdir;'ABCPE1234FF';ValidationError;Standart (Gelir Vergisi İdaresi);BVA-01..03
+REQ-IND_PAN-03;ind_pan;Boş dize ve boşluklu girdi geçersizdir;'';ValidationError;Ekip kuralı (doküman belirtmiyor);EP-02, EP-07
