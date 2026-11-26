@@ -31,7 +31,8 @@ from openpyxl.utils import get_column_letter
 
 KOK = Path(__file__).resolve().parent.parent
 RAPOR = KOK / "reports"
-TABLOLAR = KOK / "docs" / "tablolar"
+TABLOLAR = KOK / "docs" / "tablolar"          # docs/tablolar/<alan>/T1_gereksinimler.csv, T6_bulgular.csv
+TABLO_ADI = {"T1": "T1_gereksinimler.csv", "T6": "T6_bulgular.csv"}
 XML = RAPOR / "sonuc.xml"
 
 ANAHTAR = ["test_id", "fonksiyon", "girdi", "parametreler", "teknik", "sinif", "beklenen", "gerceklesen"]
@@ -45,20 +46,20 @@ def csv_oku(yol):
 
 
 def alan_tablolari_oku(onek):
-    """docs/tablolar/<onek>_<alan>.csv dosyalarını (her ekip üyesi bir dosya) tek tabloda birleştirir.
+    """docs/tablolar/<alan>/<T1|T6 dosyası> dosyalarını (her ekip üyesi bir klasör) tek tabloda birleştirir.
 
     Başlık ilk dosyadan alınır; tüm dosyaların başlığı aynı olmalıdır.
     """
-    dosyalar = sorted(TABLOLAR.glob(f"{onek}_*.csv"))
+    dosyalar = sorted(TABLOLAR.glob(f"*/{TABLO_ADI[onek]}"))
     if not dosyalar:
-        sys.exit(f"HATA: {TABLOLAR.relative_to(KOK)} içinde {onek}_<alan>.csv bulunamadı.")
+        sys.exit(f"HATA: {TABLOLAR.relative_to(KOK)} içinde <alan>/{TABLO_ADI[onek]} bulunamadı.")
     baslik, satirlar = None, []
     for yol in dosyalar:
         tablo = csv_oku(yol)
         if baslik is None:
             baslik = tablo[0]
         elif tablo[0] != baslik:
-            sys.exit(f"HATA: {yol.name} başlığı {dosyalar[0].name} ile aynı değil.")
+            sys.exit(f"HATA: {yol.relative_to(TABLOLAR)} başlığı {dosyalar[0].relative_to(TABLOLAR)} ile aynı değil.")
         satirlar += [s for s in tablo[1:] if any(h.strip() for h in s)]
     return [baslik] + satirlar
 

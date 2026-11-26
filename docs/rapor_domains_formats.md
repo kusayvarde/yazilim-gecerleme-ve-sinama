@@ -34,9 +34,9 @@ incelenmiştir. Kök neden yorumları iç uygulama hakkında kanıt değildir.
   bağımsız üretilir. Base32/Base64 geçerli örnekleri RFC 4648 §10 test vektörleridir.
 - **Örnekler:** Docstring örnekleri ayrı testtir (`Doküman örneği`).
 
-![D1 - Kara-kutu modeli](diyagramlar/D1_domains_formats.png)
+![D1 - Kara-kutu modeli](diyagramlar/domains_formats/D1_kara_kutu_modeli.png)
 
-![D2 - Test süreci](diyagramlar/D2_domains_formats.png)
+![D2 - Test süreci](diyagramlar/domains_formats/D2_test_sureci.png)
 
 ### Kaynaklar ve gereksinim önceliği
 
@@ -60,7 +60,7 @@ açıklanmayan beklentiler T1'de `GEREKSİNİM BELİRSİZLİĞİ` olarak işaret
 
 ## 3. Gereksinimler (T1)
 
-Asıl dosya: `docs/tablolar/T1_domains_formats.csv` (UTF-8 BOM, `;`). Her satır tek kuraldır.
+Asıl dosya: `docs/tablolar/domains_formats/T1_gereksinimler.csv` (UTF-8 BOM, `;`). Her satır tek kuraldır.
 Beklenen çıktı sütunu o satırdaki örnek girdiye aittir. Son sütun aynı kuralın hem geçerli hem
 geçersiz örneklerini kapsayabilir. Kısaltmalar işlev önekiyle açılır; örneğin `REQ-IBAN`
 satırındaki `EP-01`, `TC-IBAN-EP-01` anlamındadır.
@@ -195,7 +195,7 @@ geçersiz EP örneği gösterilir.
 | ind_aadhar | 4-4-4 biçimi, ilk basamak 2-9, Verhoeff | İlk basamak 0/1, harf, yanlış kontrol |
 | ind_pan | AAAAA9999A | Uzunluk, küçük harf, boşluk, konum hatası |
 
-![D3 - IBAN eşdeğerlik sınıfları](diyagramlar/D3_domains_formats.png)
+![D3 - IBAN eşdeğerlik sınıfları](diyagramlar/domains_formats/D3_esdegerlik_siniflari.png)
 
 `between` ve `length` için `min_val > max_val`, negatif uzunluk ve tür uyuşmazlığı durumlarında
 docstring `ValueError`/`TypeError` fırlatıldığını belirtir. Ortak `dogrula` sözleşmesi
@@ -211,7 +211,7 @@ IBAN'da ülkeye özgü uzunluk Almanya (22) üzerinden sınanır; 21 ve 23 karak
 kontrolü yeniden hesaplanmıştır, böylece kontrol hatası uzunluk sınırını maskelemez.
 Base58'de sayısal uzunluk sınırı tanımlı olmadığından yalnızca en küçük uzunluk (1) sınanır.
 
-![D4 - Sınır değerler](diyagramlar/D4_domains_formats.png)
+![D4 - Sınır değerler](diyagramlar/domains_formats/D4_sinir_degerleri.png)
 
 <!-- OTOMATIK:T3 -->
 | Fonksiyon | Sınır | SD-1 | SD | SD+1 | Beklenen | Test ID |
@@ -351,7 +351,7 @@ Alan: 283 test, 266 PASS, 0 FAIL, 17 XFAIL. Tüm depo: 995 test, 940 PASS, 0 FAI
 T1: 68 gereksinim; T3: 27 sınır grubu. Başarı oranı: %94.0 (XFAIL başarıya eklenmemiştir).
 <!-- /OTOMATIK:T5 -->
 
-![D5 - Alan sonuçları](diyagramlar/D5_domains_formats.png)
+![D5 - Alan sonuçları](diyagramlar/domains_formats/D5_sonuc_grafigi.png)
 
 İncelenebilir yürütme kanıtları: `reports/sonuc.xml` ve `reports/rapor.html`. Sonuçlar
 çalıştırma tarihindeki kilitli sürümlere aittir; başka sürümler için genellenemez.

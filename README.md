@@ -14,7 +14,7 @@ uv sync                                    # ortamı kur
 uv run pytest                              # tüm testler -> reports/sonuc.xml + reports/rapor.html
 uv run python scripts/sonuc_tablosu.py     # -> reports/tablolar.xlsx (T1, T2, T3, DT, T4a, T4b, T5, T6) + izlenebilirlik kontrolü
 uv run python scripts/sonuc_grafigi.py     # -> reports/D5_sonuc_grafigi.png
-uv run python scripts/diyagramlar.py       # -> docs/diyagramlar/D1, D3, D4 (PNG)
+uv run python scripts/diyagramlar.py       # -> docs/diyagramlar/network_crypto/D1, D3, D4 (PNG)
 ```
 
 Tek bir alanı çalıştırmak için: `uv run pytest tests/network_crypto`
@@ -28,8 +28,8 @@ uretici/                standartlardan test verisi üreticileri (alan başına b
 tests/network_crypto/    Network & Crypto alanı (15 fonksiyon)
 tests/<kisi_alani>/      diğer ekip üyelerinin alanları (aynı düzen)
 scripts/                 JUnit XML -> tablolar, grafik ve alan raporları (rapor_uret.py)
-docs/tablolar/           elle yazılan tablolar, alan başına: T1_<alan>.csv, T6_<alan>.csv
-docs/diyagramlar/        D1–D5 diyagramları
+docs/tablolar/<alan>/    elle yazılan tablolar: T1_gereksinimler.csv, T6_bulgular.csv
+docs/diyagramlar/<alan>/ D1–D5 diyagramları (aynı dosya adları her alanda)
 reports/                 üretilen çıktılar (git'e girmez)
 ```
 
@@ -53,6 +53,6 @@ Tam kurallar, Git iş akışı (master ← dev ← kişi dalları) ve AI agent t
        dogrula("ipv4", girdi, parametreler, beklenen)
    ```
 4. **Başarısız test silinmez.** Test verisi doğruysa `tc(..., bug="BUG-xx: ...")`
-   ile strict xfail olarak işaretlenir ve kendi `docs/tablolar/T6_<alan>.csv` dosyasına yazılır.
+   ile strict xfail olarak işaretlenir ve kendi `docs/tablolar/<alan>/T6_bulgular.csv` dosyasına yazılır.
 5. **Geçerlilik verisi standarttan doğrulanır** (Base58Check, EIP-55, BIP-173);
    `uretici/` paketindeki üreticiler kütüphaneden bağımsızdır.

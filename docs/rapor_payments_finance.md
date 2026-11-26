@@ -38,9 +38,9 @@ docstring'in açıkça taahhüt etmediği beklentiler T6'da **gereksinim belirsi
 - **Örnekler:** On üç işlevin docstring'lerindeki tüm örnekler ayrı testtir (`Doküman örneği`).
 - **Karar tablosu:** Bu bölüm EP ve BVA'ya odaklanır; DT bonusu eklenmemiştir.
 
-![D1 - Kara-kutu modeli](diyagramlar/D1_payments_finance.png)
+![D1 - Kara-kutu modeli](diyagramlar/payments_finance/D1_kara_kutu_modeli.png)
 
-![D2 - Test süreci](diyagramlar/D2_payments_finance.png)
+![D2 - Test süreci](diyagramlar/payments_finance/D2_test_sureci.png)
 
 ### Kaynaklar ve gereksinim önceliği
 
@@ -68,7 +68,7 @@ docstring örnekleri ve kamuya açık bilinen kimliklerle (Apple CUSIP `03783310
 
 ## 3. Gereksinimler (T1)
 
-Asıl dosya: `docs/tablolar/T1_payments_finance.csv` (UTF-8 BOM, `;`). Her satır tek kuraldır.
+Asıl dosya: `docs/tablolar/payments_finance/T1_gereksinimler.csv` (UTF-8 BOM, `;`). Her satır tek kuraldır.
 Beklenen çıktı sütunu o satırdaki örnek girdiye aittir. Son sütun aynı kuralın hem geçerli hem
 geçersiz örneklerini kapsayabilir. Kısaltmalar işlev önekiyle açılır; örneğin `REQ-CUSIP`
 satırındaki `EP-01`, `TC-CUSIP-EP-01` anlamındadır.
@@ -176,7 +176,7 @@ geçersiz EP örneği gösterilir.
 | card_number | Luhn doğru rakam dizisi | Luhn yanlış, harf, boş |
 | visa … mir | Ağ öneki + ağ uzunluğu + Luhn | Başka ağ öneki, yanlış uzunluk, Luhn hatası |
 
-![D3 - email eşdeğerlik sınıfları](diyagramlar/D3_payments_finance.png)
+![D3 - email eşdeğerlik sınıfları](diyagramlar/payments_finance/D3_esdegerlik_siniflari.png)
 
 Kart verileri `kart_uret(onek, uzunluk)` ile üretilir: önek sıfırlarla doldurulur ve son basamak
 Luhn ile tamamlanır. Böylece aynı önek farklı uzunluklarda, aynı uzunluk farklı öneklerde tek
@@ -191,7 +191,7 @@ uzunluk ve Luhn doğru tutulur. Tek değerli öneklerde (Visa 4, UnionPay 62, Am
 önekler SD-1/SD+1 olarak kullanılır. E-postada yerel kısım (64), DNS etiketi (63) ve adres toplamı
 (254) ayrı gruplardır; toplam uzunluk testlerinde yerel kısım 64'te sabit, her etiket 63 altındadır.
 
-![D4 - Sınır değerler](diyagramlar/D4_payments_finance.png)
+![D4 - Sınır değerler](diyagramlar/payments_finance/D4_sinir_degerleri.png)
 
 <!-- OTOMATIK:T3 -->
 | Fonksiyon | Sınır | SD-1 | SD | SD+1 | Beklenen | Test ID |
@@ -316,7 +316,7 @@ Alan: 195 test, 171 PASS, 0 FAIL, 24 XFAIL. Tüm depo: 995 test, 940 PASS, 0 FAI
 T1: 50 gereksinim; T3: 29 sınır grubu. Başarı oranı: %87.7 (XFAIL başarıya eklenmemiştir).
 <!-- /OTOMATIK:T5 -->
 
-![D5 - Alan sonuçları](diyagramlar/D5_payments_finance.png)
+![D5 - Alan sonuçları](diyagramlar/payments_finance/D5_sonuc_grafigi.png)
 
 İncelenebilir yürütme kanıtları: `reports/sonuc.xml` ve `reports/rapor.html`. Sonuçlar
 çalıştırma tarihindeki kilitli sürümlere aittir; başka sürümler için genellenemez.

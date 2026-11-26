@@ -5,8 +5,8 @@ Kullanım:  uv run python scripts/rapor_uret.py <alan>      (ör. payments_finan
 Önce:      uv run pytest  ve  uv run python scripts/sonuc_tablosu.py
 
 docs/rapor_<alan>.md içindeki <!-- OTOMATIK:T1 --> ... <!-- /OTOMATIK:T1 --> (T1-T6, isteğe bağlı DT)
-blokları yeniden yazılır; T6_<alan>.csv'nin Girdi/Beklenen/Gerçekleşen sütunları pytest
-sonucundan doldurulur (elle yazılmaz); docs/diyagramlar/D1..D5_<alan>.png üretilir.
+blokları yeniden yazılır; docs/tablolar/<alan>/T6_bulgular.csv'nin Girdi/Beklenen/Gerçekleşen
+sütunları pytest sonucundan doldurulur (elle yazılmaz); docs/diyagramlar/<alan>/D1..D5 üretilir.
 Yeni bir alan eklemek için ALANLAR sözlüğüne bir kayıt eklemek yeterlidir.
 network_crypto raporu elle yazılmıştır; görselleri scripts/diyagramlar.py üretir.
 """
@@ -26,7 +26,10 @@ import matplotlib.pyplot as plt  # noqa: E402
 from sonuc_tablosu import izlenebilirlik, t3_sinirlar  # noqa: E402
 
 KOK = Path(__file__).resolve().parent.parent
-GORSEL = KOK / "docs" / "diyagramlar"
+TABLOLAR = KOK / "docs" / "tablolar"      # <alan>/T1_gereksinimler.csv, <alan>/T6_bulgular.csv
+GORSEL = KOK / "docs" / "diyagramlar"     # <alan>/D1_...png … D5_...png
+DIYAGRAM = {"D1": "D1_kara_kutu_modeli.png", "D2": "D2_test_sureci.png", "D3": "D3_esdegerlik_siniflari.png",
+            "D4": "D4_sinir_degerleri.png", "D5": "D5_sonuc_grafigi.png"}
 
 ALANLAR = {
     "domains_formats": dict(
@@ -86,8 +89,8 @@ def kisalt(metin, sinir=60):
     return f"{metin[:sinir]}… ({uzunluk} karakter)"
 
 
-def csv_oku(ad):
-    with (KOK / "docs" / "tablolar" / ad).open(encoding="utf-8-sig", newline="") as f:
+def csv_oku(alan, ad):
+    with (TABLOLAR / alan / ad).open(encoding="utf-8-sig", newline="") as f:
         return list(csv.reader(f, delimiter=";"))
 
 
@@ -108,7 +111,7 @@ def sonuclari_oku(alan, ayar):
     if {p["fonksiyon"] for p in bizim} != set(ayar["adlar"]):
         raise ValueError(f"{alan}: XML bu alanın tüm fonksiyonlarını içermiyor; tam pytest çalıştırın")
     # T1 kontrolü eksik/filtrelenmiş pytest çalıştırmalarının rapora girmesini önler.
-    _, uyari = izlenebilirlik(csv_oku(f"T1_{alan}.csv"), bizim)
+    _, uyari = izlenebilirlik(csv_oku(alan, "T1_gereksinimler.csv"), bizim)
     if uyari:
         raise ValueError("\n".join(uyari))
     return tumu, bizim
@@ -221,8 +224,8 @@ def sonuc_grafigi(dosya, bizim, adlar, teknikler):
 
 
 def diyagramlar(alan, ayar, bizim):
-    GORSEL.mkdir(exist_ok=True)
-    yol = lambda d: GORSEL / f"{d}_{alan}.png"  # noqa: E731
+    (GORSEL / alan).mkdir(parents=True, exist_ok=True)
+    yol = lambda d: GORSEL / alan / DIYAGRAM[d]  # noqa: E731
     kutular(yol("D1"), f"D1 - {ayar['baslik']}: kara-kutu modeli",
             [f"Girdi\n{ayar['girdi']}\n+ seçenekler", "validators 0.36.0\nİç yapı incelenmez",
              "Çıktı\nTrue / ValidationError"])
@@ -235,7 +238,7 @@ def diyagramlar(alan, ayar, bizim):
 # ------------------------------------------------------------------ rapor blokları
 def t6_yenile(alan, bizim):
     """T6'nın Girdi/Beklenen/Gerçekleşen sütunlarını pytest sonucundan doldurur."""
-    t6 = csv_oku(f"T6_{alan}.csv")
+    t6 = csv_oku(alan, "T6_bulgular.csv")
     kimlik = {p["test_id"]: p for p in bizim}
     for satir in t6[1:]:
         props = [kimlik[i.strip()] for i in satir[1].split(",") if i.strip() in kimlik]
@@ -244,14 +247,14 @@ def t6_yenile(alan, bizim):
         satir[2] = " | ".join(dict.fromkeys(kisalt(p["girdi"]) for p in props))
         satir[3] = " | ".join(dict.fromkeys(p["beklenen"] for p in props))
         satir[4] = " | ".join(dict.fromkeys(p["gerceklesen"] for p in props))
-    with (KOK / "docs" / "tablolar" / f"T6_{alan}.csv").open("w", encoding="utf-8-sig", newline="") as f:
+    with (TABLOLAR / alan / "T6_bulgular.csv").open("w", encoding="utf-8-sig", newline="") as f:
         csv.writer(f, delimiter=";").writerows(t6)
     return t6
 
 
 def bloklar(alan, ayar, tumu, bizim):
     adlar, teknikler = ayar["adlar"], ayar["teknikler"]
-    t1 = csv_oku(f"T1_{alan}.csv")
+    t1 = csv_oku(alan, "T1_gereksinimler.csv")
     t6 = t6_yenile(alan, bizim)
     t3, uyarilar = t3_sinirlar(bizim)
     if uyarilar:

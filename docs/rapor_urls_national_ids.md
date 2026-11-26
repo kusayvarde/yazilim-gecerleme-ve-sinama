@@ -36,9 +36,9 @@ tasarımında kullanılmamıştır. Bununla birlikte "kaynağa hiçbir maruz kal
 - **Karar tablosu:** Bu bölüm EP ve BVA'ya odaklanır; DT bonusu eklenmemiştir.
   Ortak Excel'deki DT sayfası Kusay'ın IPv4 karar tablosuna aittir.
 
-![D1 - Kara-kutu modeli](diyagramlar/D1_urls_national_ids.png)
+![D1 - Kara-kutu modeli](diyagramlar/urls_national_ids/D1_kara_kutu_modeli.png)
 
-![D2 - Test süreci](diyagramlar/D2_urls_national_ids.png)
+![D2 - Test süreci](diyagramlar/urls_national_ids/D2_test_sureci.png)
 
 ### Kaynaklar ve gereksinim önceliği
 
@@ -71,7 +71,7 @@ docstring'de açıklanmayan beklentiler ayrıca belirtilir; gözlenen davranış
 
 ## 3. Gereksinimler (T1)
 
-Asıl dosya: `docs/tablolar/T1_urls_national_ids.csv` (UTF-8 BOM, `;`). Her satır tek
+Asıl dosya: `docs/tablolar/urls_national_ids/T1_gereksinimler.csv` (UTF-8 BOM, `;`). Her satır tek
 kuraldır. Beklenen çıktı sütunu o satırdaki örnek girdiye aittir. Son sütun aynı kuralın
 hem geçerli hem geçersiz örneklerini kapsayabilir. Kısaltmalar işlev önekiyle açılır;
 örneğin `REQ-URL` satırındaki `EP-01`, `TC-URL-EP-01` anlamındadır.
@@ -203,7 +203,7 @@ ve bir geçersiz EP örneği gösterilir.
 | ru_inn | 10 haneli kontrol veya 12 haneli iki kontrol | Yanlış kontrol, uzunluk veya harf |
 | fr_department | Metropol, 2A/2B, denizaşırı kod | 00, 20, 2C veya boş girdi |
 
-![D3 - INN eşdeğerlik sınıfları](diyagramlar/D3_urls_national_ids.png)
+![D3 - INN eşdeğerlik sınıfları](diyagramlar/urls_national_ids/D3_esdegerlik_siniflari.png)
 
 `uretici/urls_national_ids.py` standart hesaplarını uygular ve `validators` içe aktarmaz. Sekiz sabit
 docstring örneği `ornekleri_dogrula()` ile çapraz kontrol edilmiştir. NIR'da Korsika
@@ -221,7 +221,7 @@ mod-31 karakteri bağımsız hesaplandığından kontrol karakteri hatası sın�
 URL'de port 0 çevresi ayrıca gösterilmiştir; geçerli hizmet portunun alt sınırı 1 için de
 0/1/2 üçlüsü vardır. NIR'ın özel idari ay değerleri bu normal doğum ayı analizinin dışındadır.
 
-![D4 - Sınır değerler](diyagramlar/D4_urls_national_ids.png)
+![D4 - Sınır değerler](diyagramlar/urls_national_ids/D4_sinir_degerleri.png)
 
 <!-- OTOMATIK:T3 -->
 | Fonksiyon | Sınır | SD-1 | SD | SD+1 | Beklenen | Test ID |
@@ -337,21 +337,21 @@ Alan: 207 test, 201 PASS, 0 FAIL, 6 XFAIL. Tüm depo: 995 test, 940 PASS, 0 FAIL
 T1: 76 gereksinim; T3: 25 sınır grubu. Başarı oranı: %97.1 (XFAIL başarıya eklenmemiştir).
 <!-- /OTOMATIK:T5 -->
 
-![D5 - Alan sonuçları](diyagramlar/D5_urls_national_ids.png)
+![D5 - Alan sonuçları](diyagramlar/urls_national_ids/D5_sonuc_grafigi.png)
 
 İncelenebilir yürütme kanıtları: `reports/sonuc.xml` ve `reports/rapor.html`.
 Sonuçlar çalıştırma tarihindeki kilitli sürümlere aittir; başka sürümler için genellenemez.
 
-![Birleşik pytest HTML raporunun özeti](diyagramlar/HTML_urls_national_ids.png)
+![Birleşik pytest HTML raporunun özeti](diyagramlar/urls_national_ids/html_raporu.png)
 
 Bu görüntü gerçek HTML raporundan alınmıştır ve tüm deponun özetini gösterir;
 yalnızca MMHDJ bölümünün sonucu olarak yorumlanmamalıdır.
 
-![pytest konsol çıktısı](diyagramlar/CONSOLE_urls_national_ids.png)
+![pytest konsol çıktısı](diyagramlar/urls_national_ids/konsol_ciktisi.png)
 
 Konsol görseli gerçek pytest stdout/stderr kaydının tarayıcıda görüntülenmiş
-halidir; yerel terminal penceresinin ekran görüntüsü olarak sunulmaz.
-Ham kayıt: `reports/pytest_urls_national_ids_console.txt`.
+halidir; yerel terminal penceresinin ekran görüntüsü olarak sunulmaz. Aynı çıktı
+`uv run pytest tests/urls_national_ids` ile yeniden üretilebilir.
 
 ## 9. Bulgular ve analiz (T6)
 
