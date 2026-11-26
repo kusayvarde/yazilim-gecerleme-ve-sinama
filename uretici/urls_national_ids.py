@@ -84,3 +84,8 @@ def ornekleri_dogrula():
     assert nir_uret(bosluk=True) == "1 84 12 76 451 089 46"
     assert inn_uret() == "7830002293"
     assert inn_uret("5001007322") == "500100732259"
+
+
+if __name__ == "__main__":
+    ornekleri_dogrula()
+    print("Üreticiler docstring ve bilinen örneklerle uyumlu.")

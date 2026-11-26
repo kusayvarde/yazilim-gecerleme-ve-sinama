@@ -30,7 +30,7 @@ incelenmiştir. Kök neden yorumları iç uygulama hakkında kanıt değildir.
   aralıkları için SD-1/SD/SD+1 üçlüleri kullanılır.
 - **Karar tablosu (DT, bonus):** `domain` için `rfc_1034` seçeneği × girdide sondaki nokta
   koşullarının dört birleşimi (R1-R4) ayrı testtir.
-- **Bağımsız veri:** IBAN mod-97 ve Aadhaar Verhoeff verileri `uretici.py` ile kütüphaneden
+- **Bağımsız veri:** IBAN mod-97 ve Aadhaar Verhoeff verileri `uretici/domains_formats.py` ile kütüphaneden
   bağımsız üretilir. Base32/Base64 geçerli örnekleri RFC 4648 §10 test vektörleridir.
 - **Örnekler:** Docstring örnekleri ayrı testtir (`Doküman örneği`).
 
@@ -314,7 +314,8 @@ $env:PYTHONIOENCODING = 'utf-8'
 uv sync --locked
 uv run pytest
 uv run python scripts/sonuc_tablosu.py
-uv run python -m tests.domains_formats.rapor_uret
+uv run python -m uretici.domains_formats
+uv run python scripts/rapor_uret.py domains_formats
 ```
 
 Son komut bu bölümün raporundaki otomatik blokları, T6'nın Girdi/Beklenen/Gerçekleşen sütunlarını
@@ -396,7 +397,7 @@ edilmemiştir (GÖZLEM-20). `between`/`length` istisna durumları ortak sözleş
 
 EP, çok seçenekli `domain`/`hostname` işlevlerinde her seçeneği ayrı sınamayı; BVA ise uzunluk,
 port ve kod aralıklarının kenarlarını görünür kılmayı sağlamıştır. Karar tablosu `rfc_1034`
-seçeneğinin dört birleşimini eksiksiz kapsar. Bağımsız IBAN ve Verhoeff üreteçleri, kontrol
+seçeneğinin dört birleşimini eksiksiz kapsar. Bağımsız IBAN ve Verhoeff üreticileri, kontrol
 basamağı hatalarının gerçek bulgu mu yoksa test verisi hatası mı olduğunu ayırmayı sağlamıştır.
 
 Bununla birlikte kod kapsamı ölçülmemiştir; iç yollar veya kök nedenler hakkında iddia edilemez.

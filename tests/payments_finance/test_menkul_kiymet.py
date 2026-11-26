@@ -4,13 +4,13 @@ Beklentiler docstring'deki Wikipedia bağlantıları ve standartlardan türetilm
 CUSIP (ANSI X9.6, CUSIP Global Services: 9 karakter, 8 + mod-10 "çift konumu ikiye katla"
 kontrolü), ISIN (ISO 6166: 2 harf ülke kodu + 9 alfasayısal NSIN + Luhn kontrolü),
 SEDOL (LSE: 6 alfasayısal, sesli harf yok, ağırlık 1-3-1-7-3-9 + kontrol).
-Geçerli veriler tests/payments_finance/uretici.py ile bağımsız üretilmiştir.
+Geçerli veriler uretici/payments_finance.py ile bağımsız üretilmiştir.
 validators kaynak kodu kullanılmamıştır.
 """
 
 import pytest
 
-from tests.payments_finance.uretici import cusip_uret, isin_uret, sedol_uret
+from uretici.payments_finance import cusip_uret, isin_uret, sedol_uret
 from tests.yardimci import I, V, tc
 
 # ================================================================= cusip

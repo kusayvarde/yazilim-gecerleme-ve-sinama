@@ -67,7 +67,7 @@ docstring'de açıklanmayan beklentiler ayrıca belirtilir; gözlenen davranış
   10 hane için `2,4,10,3,5,9,4,6,8`; 12 hanenin ilk kontrolü için
   `7,2,4,10,3,5,9,4,6,8`, ikinci kontrolü için `3,7,2,4,10,3,5,9,4,6,8`
   kullanılır. Her ağırlıklı toplam `(toplam % 11) % 10` ile tek basamağa indirilir.
-  Üreteç ayrıca iki sabit docstring örneğiyle çapraz doğrulanmıştır.
+  Üretici ayrıca iki sabit docstring örneğiyle çapraz doğrulanmıştır.
 
 ## 3. Gereksinimler (T1)
 
@@ -205,7 +205,7 @@ ve bir geçersiz EP örneği gösterilir.
 
 ![D3 - INN eşdeğerlik sınıfları](diyagramlar/D3_urls_national_ids.png)
 
-`uretici.py` standart hesaplarını uygular ve `validators` içe aktarmaz. Sekiz sabit
+`uretici/urls_national_ids.py` standart hesaplarını uygular ve `validators` içe aktarmaz. Sekiz sabit
 docstring örneği `ornekleri_dogrula()` ile çapraz kontrol edilmiştir. NIR'da Korsika
 dönüşümü, Finlandiya işletme kimliğinde mod-11 kalan 0/1 dalları ayrıca ele alınır.
 Üretilen veriler gerçek bir kayıt sorgusundan alınmamıştır.
@@ -302,10 +302,10 @@ PowerShell ile depo kökünden yeniden üretim:
 ```powershell
 $env:PYTHONIOENCODING = 'utf-8'
 uv sync --locked
-uv run python -c "from tests.urls_national_ids.uretici import ornekleri_dogrula; ornekleri_dogrula()"
+uv run python -m uretici.urls_national_ids
 uv run pytest
 uv run python scripts/sonuc_tablosu.py
-uv run python -m tests.urls_national_ids.rapor_uret
+uv run python scripts/rapor_uret.py urls_national_ids
 ```
 
 Son komut yalnızca bu bölümün raporundaki otomatik blokları, T6'nın gözlenen değerlerini
@@ -332,7 +332,7 @@ Aşağıdaki sayılar mevcut JUnit XML dosyasından hesaplanmıştır. XFAIL, i�
 | fr_department | 18 | 12 | 6 | 18 | 0 | 0 |
 | TOPLAM | 207 | 132 | 75 | 201 | 0 | 6 |
 
-Alan: 207 test, 201 PASS, 0 FAIL, 6 XFAIL. Tüm depo: 517 test, 503 PASS, 0 FAIL, 14 XFAIL.
+Alan: 207 test, 201 PASS, 0 FAIL, 6 XFAIL. Tüm depo: 995 test, 940 PASS, 0 FAIL, 55 XFAIL.
 
 T1: 76 gereksinim; T3: 25 sınır grubu. Başarı oranı: %97.1 (XFAIL başarıya eklenmemiştir).
 <!-- /OTOMATIK:T5 -->
@@ -395,7 +395,6 @@ ve bütün INN bölge tahsisleri için eksiksiz kapsama iddiası yoktur. Kaynakl
 belirsizlik varsa açıkça ayrıştırılmıştır. Çalışma, seçilen sözleşmeler için izlenebilir
 ve yeniden üretilebilir bir doğrulama bölümüdür.
 
-**Ekip entegrasyonu notu:** AFAHMAD1'in `domain` DT testleri de birleştiğinde ortak
-`scripts/sonuc_tablosu.py` IPv4'e özgü DT sütunları kullandığı için bu dört satırın
-sütunları kaymaktadır. Bu bölüm DT eklemez ve paylaşılan betiği değiştirmez.
-Bu ortak raporlama sorunu ekip koordinasyonuyla ele alınmalıdır.
+**Ekip entegrasyonu notu:** AFAHMAD1'in `domain` DT testleri birleştiğinde ortak Excel'in DT
+sayfası IPv4'e özgü sütunlar kullandığı için kaymıştı. `scripts/sonuc_tablosu.py` artık DT'yi
+fonksiyon, kural, koşullar ve parametreler sütunlarıyla genel biçimde yazar; sorun giderilmiştir.

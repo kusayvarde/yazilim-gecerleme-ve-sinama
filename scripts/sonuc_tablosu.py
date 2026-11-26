@@ -6,7 +6,7 @@ reports/tablolar.xlsx sayfaları:
   T1  Gereksinimler           gereksinim başına bir satır (ID, gereksinim, örnek girdi, beklenen, kaynak, sınayan testler)
   T2  Eşdeğerlik Sınıfları    sınıf başına bir satır + temsilci değer           (test kodundan türetilir)
   T3  Sınır Değerler          sınır başına bir satır: SD−1 / SD / SD+1          (test kodundan türetilir)
-  DT  Karar Tablosu           ipv4 cidr × strict × CIDR kombinasyonları
+  DT  Karar Tablosu           kural başına bir satır (ipv4, domain; fonksiyon sütunuyla)
   T4a Test Senaryoları        tasarım aşaması: Gerçekleşen ve Durum BOŞ
   T4b Test Sonuçları          pytest sonrası: Gerçekleşen ve Durum dolu
   T5  Sonuç Özeti             fonksiyon başına sayılar + TOPLAM
@@ -297,12 +297,15 @@ def main():
                t3, [14, 30, 30, 30, 30, 16, 44],
                not_="Her sınır bir satır. V = geçerli (True), I = geçersiz (ValidationError). "
                     "İki taraflı aralıklarda alt ve üst sınır ayrı satırdır. — : bu sınır için anlamlı değil.")
-    dt = [[s["test_id"], s["sinif"].split()[0], *[p.split("=")[1] for p in s["parametreler"].split(", ")],
-           "var" if "/" in s["girdi"] else "yok", s["girdi"], "V" if s["beklenen"] == "True" else "I"]
+    # Genel biçim: her fonksiyonun DT'si farklı sayıda koşul (parametre) taşıyabilir.
+    dt = [[s["test_id"], s["fonksiyon"], s["sinif"].split()[0], " ".join(s["sinif"].split()[1:]),
+           s["parametreler"], s["girdi"], "V" if s["beklenen"] == "True" else "I"]
           for s in senaryolar if s["teknik"] == "DT"]
     sayfa_ekle(wb, "DT Karar Tablosu",
-               ["Test ID", "Kural", "cidr", "strict", "Girdide CIDR", "Girdi", "Beklenen"], dt,
-               [16, 7, 8, 8, 13, 16, 10], not_="ipv4: cidr × strict × (girdide CIDR var mı?) kombinasyonları.")
+               ["Test ID", "Fonksiyon", "Kural", "Koşullar", "Parametreler", "Girdi", "Beklenen"], dt,
+               [17, 11, 7, 40, 26, 18, 10],
+               not_="Kural başına bir satır. ipv4: cidr × strict × (girdide CIDR var mı?); "
+                    "domain: rfc_1034 × (sondaki nokta var mı?).")
     sayfa_ekle(wb, "T4a Test Senaryoları", t4_baslik, t4a, [18, 13, 14, 46, 22, 8, 40, 16, 14, 9],
                not_="Tasarım aşaması: Gerçekleşen ve Durum sütunları testler koşturulmadan önce boştur.")
     sayfa_ekle(wb, "T4b Test Sonuçları", t4_baslik + ["Not"], t4b, [18, 13, 14, 46, 22, 8, 40, 16, 16, 9, 60],

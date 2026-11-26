@@ -62,7 +62,7 @@ belirtilir; gözlenen davranışa göre beklenti üretilmez.
   ağ önekleri ve uzunlukları için [Wikipedia - Payment card number](https://en.wikipedia.org/wiki/Payment_card_number)
   IIN tablosu. Bu tablo ikincil kaynaktır; kart ağlarının kendi IIN belgeleri kamuya kapalıdır.
 
-`uretici.py` bu hesapları uygular ve `validators` içe aktarmaz. `ornekleri_dogrula()` üreteçleri
+`uretici/payments_finance.py` bu hesapları uygular ve `validators` içe aktarmaz. `ornekleri_dogrula()` üreticileri
 docstring örnekleri ve kamuya açık bilinen kimliklerle (Apple CUSIP `037833100`, ISIN
 `US0378331005`, BAE Systems SEDOL `0263494`) çapraz denetler.
 
@@ -260,7 +260,7 @@ reddetmeyi bekler; tek bozulan kural ülke kodudur. `TC-MASTERCARD-BVA-06` 2-ser
 
 ## 7. Otomasyon
 
-`test_email.py`, `test_menkul_kiymet.py` (cusip/isin/sedol) ve `test_kartlar.py` (dokuz kart
+`tests/payments_finance/` altındaki `test_email.py`, `test_menkul_kiymet.py` (cusip/isin/sedol) ve `test_kartlar.py` (dokuz kart
 işlevi) dosyaları ortak `tc` ve `dogrula` yapısını kullanır:
 
 ```python
@@ -279,10 +279,10 @@ PowerShell ile depo kökünden yeniden üretim:
 ```powershell
 $env:PYTHONIOENCODING = 'utf-8'
 uv sync --locked
-uv run python -m tests.payments_finance.uretici
+uv run python -m uretici.payments_finance
 uv run pytest
 uv run python scripts/sonuc_tablosu.py
-uv run python -m tests.payments_finance.rapor_uret
+uv run python scripts/rapor_uret.py payments_finance
 ```
 
 Son komut yalnızca bu bölümün raporundaki otomatik blokları, T6'nın gözlenen değerlerini ve kendi
@@ -351,7 +351,7 @@ numaranın yanlış markaya atanabileceği anlamına gelir. Keşif çağrıları
 önekler üzerinde yapılmış, sonuçlar T6 yorumlarına yazılmıştır.
 
 **Menkul kıymetler (BUG-50 … BUG-52):** Kontrol basamağı hesapları üç işlevde de doğru çalışır
-(bağımsız üreteçle üretilen tüm geçerli veriler kabul, tüm bozuk kontrol basamakları red). ISIN'de
+(bağımsız üreticiyle üretilen tüm geçerli veriler kabul, tüm bozuk kontrol basamakları red). ISIN'de
 ülke kodu bir kayıtla karşılaştırılmaz; küçük harf davranışı ise işlevler arasında tutarsızdır
 (GÖZLEM-40).
 
@@ -364,7 +364,7 @@ için önem düşüktür. 320'ye yakın gözlenen üst sınır, RFC 3696'nın er
 EP, biçim ve seçenek kurallarını ayrı sınamayı; BVA ise önek aralıklarının ve uzunlukların kenarlarını
 görünür kılmayı sağlamıştır. On üç bulgunun hiçbiri docstring örneklerinden gelmemiştir; tamamı
 BVA ve tek kuralı bozan EP testlerinden çıkmıştır. Bağımsız Luhn/CUSIP/ISIN/
-SEDOL üreteçleri, geçersiz veriyi geçerli sanma riskini azaltmıştır.
+SEDOL üreticileri, geçersiz veriyi geçerli sanma riskini azaltmıştır.
 
 Bununla birlikte kod kapsamı ölçülmemiştir; iç yollar veya kök nedenler hakkında iddia edilemez.
 Kart ağlarının IIN aralıkları zamanla değişir ve kamuya açık birincil kaynak yoktur; bu nedenle

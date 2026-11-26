@@ -37,10 +37,10 @@ parameters in `tc(...)` (e.g. `tc(..., min_val=1, max_val=5)`). Check each funct
    published docs and docstring (`python -c "import validators; print(validators.<fn>.__doc__)"`)
    and the relevant standard (RFCs, ISO, Luhn, IBAN, …). To analyse a failing test, call the function
    and compare with the docstring/standard. The report must state that the source was not consulted.
-2. **Stay in your own area.** Only create or edit files in your own `tests/<area>/`,
+2. **Stay in your own area.** Only create or edit files in your own `tests/<area>/`, `uretici/<area>.py`,
    `docs/tablolar/T1_<area>.csv`, `docs/tablolar/T6_<area>.csv`, `docs/rapor_<area>.md` and your own
    diagrams. The **shared files** below are changed only after telling the team (they affect
-   everyone's results): `conftest.py`, `tests/yardimci.py`, `scripts/*`, `pyproject.toml`, `uv.lock`,
+   everyone's results): `conftest.py`, `tests/yardimci.py`, `uretici/ortak.py`, `scripts/*`, `pyproject.toml`, `uv.lock`,
    `AGENTS.md`, `CLAUDE.md`, `README.md`.
 3. **Never delete or weaken a failing test.** Decide: is the test wrong, or the library?
    - Test data/expectation wrong according to docs/standard → fix the test.
@@ -65,6 +65,7 @@ uv run pytest -k "TC-IPV4-BVA-03"               # one test case, by Test ID
 uv run python scripts/sonuc_tablosu.py          # → reports/tablolar.xlsx (T1–T6) + traceability check
 uv run python scripts/sonuc_grafigi.py          # → reports/D5_sonuc_grafigi.png (after sonuc_tablosu.py)
 uv run python scripts/diyagramlar.py            # network_crypto D1/D3/D4 diagrams
+uv run python scripts/rapor_uret.py [<area>]     # fill OTOMATIK blocks + T6 actuals + D1–D5 of docs/rapor_<area>.md
 ```
 
 `-v`, JUnit XML and HTML report options are in `addopts` in `pyproject.toml`. On Windows consoles
@@ -118,8 +119,10 @@ def test_email(dogrula, girdi, parametreler, beklenen):
   (min−1, min, min+1, max−1, max, max+1).
 - **BVA label format is parsed by the table script** — it must be
   `<boundary name> SD-1|SD|SD+1 [(value)]`, e.g. `"Dakika üst SD+1 (60)"`. Other formats break T3.
-- Valid test data must be checked against the standard, independently of the library (write a small
-  generator in your own test file, or propose one for `tests/yardimci.py`).
+- Valid test data must be checked against the standard, independently of the library. Put the data
+  "üretici" (generator) in `uretici/<area>.py` — never inside `tests/` — with an `ornekleri_dogrula()`
+  self-check; cross-area helpers (Base58, `karakter_degistir`) live in `uretici/ortak.py`.
+  Use the name *üretici* everywhere (not "üreteç" or "generator").
 - Spread effort by difficulty/points: very hard ≈ 20–30 tests, hard ≈ 12–18, easy ≈ 6–10.
 
 ## Tables and traceability

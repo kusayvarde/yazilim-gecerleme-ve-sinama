@@ -7,14 +7,14 @@ kart ağlarının kamuya açık IIN aralıklarından türetilmiştir (rapordaki 
   Discover 6011, 622126-622925, 644-649, 65 (16-19) · Diners 300-305, 36, 38-39 (14-19)
   JCB 3528-3589 (16-19) · UnionPay 62 (16-19) · Mir 2200-2204 (16-19)
 Her geçersiz test tek kuralı bozar: önek dışı testlerde Luhn yeniden hesaplanır, Luhn
-testinde önek ve uzunluk korunur. Veriler uretici.py ile bağımsız üretilir.
+testinde önek ve uzunluk korunur. Veriler uretici/payments_finance.py ile bağımsız üretilir.
 validators kaynak kodu kullanılmamıştır.
 """
 
 import pytest
 
-from tests.payments_finance.uretici import kart_uret as k
-from tests.payments_finance.uretici import luhn_boz
+from uretici.payments_finance import kart_uret as k
+from uretici.payments_finance import luhn_boz
 from tests.yardimci import I, V, tc
 
 # ============================================================ card_number

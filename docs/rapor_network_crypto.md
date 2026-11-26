@@ -58,7 +58,7 @@ Fonksiyonlar yalnızca **girdi ve çıktıları** üzerinden test edilmiştir (D
 >
 > Başarısız testler de yalnızca fonksiyon çağrılıp docstring okunarak analiz edilmiştir.
 > Geçerli kripto test verisi kütüphaneden bağımsız olarak, standartları uygulayan kendi
-> üreticilerimizle (`tests/yardimci.py`: `base58check`, `trx_adresi`, `eip55`) doğrulanmıştır.
+> üreticilerimizle (`uretici/ortak.py`: `base58check`; `uretici/network_crypto.py`: `trx_adresi`, `eip55`) doğrulanmıştır.
 
 **Kütüphanenin sözleşmesi:** Geçersiz girdide istisna **fırlatılmaz**; fonksiyon `False` gibi
 davranan (falsy) bir `ValidationError` nesnesi **döndürür**. Bu nedenle testlerde
@@ -507,7 +507,8 @@ konsol çıktısında, HTML raporda ve tablolarda birebir aynıdır.
 
 ```
 conftest.py                  ortak `dogrula` fixture'ı (çağır + XML'e kaydet + doğrula)
-tests/yardimci.py            tc() senaryo tanımı + Base58Check / EIP-55 veri üreticileri
+tests/yardimci.py            tc() senaryo tanımı ve V / I sabitleri
+uretici/network_crypto.py    TRON (Base58Check) / EIP-55 veri üreticileri (uretici/ortak.py ile)
 tests/network_crypto/        test_ipv4.py, test_ipv6.py, test_cron.py,
                              test_crypto_addresses.py, test_mac_uuid.py, test_hashes.py
 scripts/sonuc_tablosu.py     JUnit XML -> tablolar.xlsx (T1–T6) + izlenebilirlik denetimi

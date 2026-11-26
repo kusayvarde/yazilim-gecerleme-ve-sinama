@@ -7,7 +7,8 @@ Base58'de sayısal uzunluk sınırı tanımlı değildir; yalnızca en küçük 
 
 import pytest
 
-from tests.yardimci import B58, I, V, tc
+from tests.yardimci import I, V, tc
+from uretici.ortak import B58
 
 # =============================================================== slug
 SLUG_EP = [

@@ -109,7 +109,7 @@ def sedol_uret(govde6: str) -> str:
 
 
 def ornekleri_dogrula():
-    """Üreteçleri docstring ve kamuya açık bilinen örneklerle karşılaştırır."""
+    """Üreticileri docstring ve kamuya açık bilinen örneklerle karşılaştırır."""
     # Docstring örnekleri
     assert cusip_uret("037833DP") == "037833DP2"
     assert sedol_uret("293692") == "2936921"
@@ -123,7 +123,7 @@ def ornekleri_dogrula():
     assert isin_uret("US037833100") == "US0378331005"
     assert sedol_uret("026349") == "0263494"
     assert sedol_uret("B0YBKJ") == "B0YBKJ7"
-    print("Üreteçler docstring ve bilinen örneklerle uyumlu.")
+    print("Üreticiler docstring ve bilinen örneklerle uyumlu.")
 
 
 if __name__ == "__main__":

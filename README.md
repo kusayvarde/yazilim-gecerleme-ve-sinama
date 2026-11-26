@@ -23,10 +23,11 @@ Tek bir alanı çalıştırmak için: `uv run pytest tests/network_crypto`
 
 ```
 conftest.py              ortak `dogrula` fixture'ı (çağır + XML'e kaydet + doğrula)
-tests/yardimci.py        tc() senaryo tanımı, Base58Check / EIP-55 veri üreticileri
+tests/yardimci.py        tc() senaryo tanımı ve V / I sabitleri
+uretici/                standartlardan test verisi üreticileri (alan başına bir modül, validators kullanmaz)
 tests/network_crypto/    Network & Crypto alanı (15 fonksiyon)
 tests/<kisi_alani>/      diğer ekip üyelerinin alanları (aynı düzen)
-scripts/                 JUnit XML -> CSV tabloları ve grafik
+scripts/                 JUnit XML -> tablolar, grafik ve alan raporları (rapor_uret.py)
 docs/tablolar/           elle yazılan tablolar, alan başına: T1_<alan>.csv, T6_<alan>.csv
 docs/diyagramlar/        D1–D5 diyagramları
 reports/                 üretilen çıktılar (git'e girmez)
@@ -54,4 +55,4 @@ Tam kurallar, Git iş akışı (master ← dev ← kişi dalları) ve AI agent t
 4. **Başarısız test silinmez.** Test verisi doğruysa `tc(..., bug="BUG-xx: ...")`
    ile strict xfail olarak işaretlenir ve kendi `docs/tablolar/T6_<alan>.csv` dosyasına yazılır.
 5. **Geçerlilik verisi standarttan doğrulanır** (Base58Check, EIP-55, BIP-173);
-   `tests/yardimci.py`'deki üreticiler kütüphaneden bağımsızdır.
+   `uretici/` paketindeki üreticiler kütüphaneden bağımsızdır.
