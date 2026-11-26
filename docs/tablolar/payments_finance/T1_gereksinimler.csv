@@ -1,0 +1,51 @@
+﻿ID;Fonksiyon;Gereksinim;Örnek girdi;Beklenen çıktı;Kaynak;Sınayan testler
+REQ-EMAIL-01;email;Adres tek '@' ile ayrılmış boş olmayan yerel kısım ve alan adından oluşur;someone@example.com;True;"validators==0.36.0 email.__doc__; RFC 5322 https://www.rfc-editor.org/rfc/rfc5322";EP-01, EP-02, EP-14..17, EP-28
+REQ-EMAIL-02;email;Yerel kısım RFC 5322 dot-atom (atext, ardışık olmayan noktalar) veya tırnaklı dizedir;"""ali veli""@example.com";True;RFC 5322 https://www.rfc-editor.org/rfc/rfc5322 §3.2.3, §3.4.1;EP-03..07, EP-18..21
+REQ-EMAIL-03;email;"Alan adı LDH etiketlerinden oluşur, TLD zorunludur ve tamamen sayısal olamaz; punycode IDN geçerlidir";user@-example.com;ValidationError;"RFC 1034/1035; RFC 3696 §2";EP-08, EP-22, EP-23, EP-27
+REQ-EMAIL-04;email;"ipv4_address/ipv6_address=True iken RFC 5321 adres-literali kabul edilir; varsayılanda reddedilir";user@[192.168.0.1];True;"validators==0.36.0 email.__doc__; RFC 5321 https://www.rfc-editor.org/rfc/rfc5321 §4.1.3";EP-09, EP-10, EP-26
+REQ-EMAIL-05;email;"simple_host=True tek etiketli ana makineye izin verir; varsayılanda reddedilir";user@localhost;True;validators==0.36.0 email.__doc__;EP-11, EP-23
+REQ-EMAIL-06;email;"rfc_1034=True sondaki noktaya izin verir; varsayılanda reddedilir";user@example.com.;True;"validators==0.36.0 email.__doc__; RFC 1034";EP-12, EP-24
+REQ-EMAIL-07;email;"rfc_2782=True SRV adı alt çizgisine izin verir; varsayılanda reddedilir";user@_sip._tcp.example.com;True;"validators==0.36.0 email.__doc__; RFC 2782";EP-13, EP-25
+REQ-EMAIL-08;email;Yerel kısım en çok 64 karakterdir;'a'×65 + '@example.com';ValidationError;RFC 5321 https://www.rfc-editor.org/rfc/rfc5321 §4.5.3.1.1;BVA-01..03
+REQ-EMAIL-09;email;Alan adı etiketi en çok 63 karakterdir;user@'a'×64.com;ValidationError;RFC 1035 §2.3.4 https://www.rfc-editor.org/rfc/rfc1035;BVA-04..06
+REQ-EMAIL-10;email;Adres toplam en çok 254 karakterdir;255 karakterlik adres;ValidationError;"RFC 5321 https://www.rfc-editor.org/rfc/rfc5321 §4.5.3.1.3; RFC 3696 errata 1690";BVA-07..09
+REQ-CUSIP-01;cusip;9. karakter ilk 8 karakterin mod-10 kontrol basamağıdır;037833DP2;True;"validators==0.36.0 cusip.__doc__; CUSIP Global Services / ANSI X9.6; https://en.wikipedia.org/wiki/CUSIP";EP-01..04, EP-06, EP-07
+REQ-CUSIP-02;cusip;Karakterler rakam, büyük harf ve yerleşim karakterleri * @ # olabilir;037833dp2;ValidationError;"CUSIP Global Services / ANSI X9.6; https://en.wikipedia.org/wiki/CUSIP";EP-05, EP-08..10
+REQ-CUSIP-03;cusip;Boş CUSIP geçersizdir;'';ValidationError;validators==0.36.0 cusip.__doc__;EP-11
+REQ-CUSIP-04;cusip;CUSIP tam 9 karakterdir;037833DP;ValidationError;"CUSIP Global Services / ANSI X9.6; https://en.wikipedia.org/wiki/CUSIP";BVA-01..03
+REQ-ISIN-01;isin;12. karakter, harfleri sayıya çevrilmiş ilk 11 karakterin Luhn kontrol basamağıdır;US0378331005;True;"validators==0.36.0 isin.__doc__; ISO 6166; https://en.wikipedia.org/wiki/International_Securities_Identification_Number";EP-03..05, EP-07, EP-11
+REQ-ISIN-02;isin;İlk iki karakter ISO 3166-1 alpha-2 ülke kodu veya XS gibi ISO 6166 önekidir;ZZ0002634945;ValidationError;"ISO 6166; https://en.wikipedia.org/wiki/International_Securities_Identification_Number; ISO 3166-1";EP-06, EP-08, EP-10
+REQ-ISIN-03;isin;Karakterler büyük harf ve rakamdır;us0378331005;ValidationError;"ISO 6166; https://en.wikipedia.org/wiki/International_Securities_Identification_Number";EP-09, EP-12
+REQ-ISIN-04;isin;Boş ISIN geçersizdir;'';ValidationError;validators==0.36.0 isin.__doc__;EP-13
+REQ-ISIN-05;isin;ISIN tam 12 karakterdir;037833DP2;ValidationError;"validators==0.36.0 isin.__doc__; ISO 6166; https://en.wikipedia.org/wiki/International_Securities_Identification_Number";EP-01, EP-02, BVA-01..03
+REQ-SEDOL-01;sedol;7. karakter 1-3-1-7-3-9 ağırlıklı mod-10 kontrol basamağıdır;2936921;True;"validators==0.36.0 sedol.__doc__; London Stock Exchange SEDOL; https://en.wikipedia.org/wiki/SEDOL";EP-01, EP-03..06, EP-09
+REQ-SEDOL-02;sedol;SEDOL sesli harf (A E I O U) içermez;29A6922;ValidationError;"validators==0.36.0 sedol.__doc__; London Stock Exchange SEDOL; https://en.wikipedia.org/wiki/SEDOL";EP-02, EP-07
+REQ-SEDOL-03;sedol;Karakterler rakam ve büyük ünsüz harftir;b0ybkj7;ValidationError;"London Stock Exchange SEDOL; https://en.wikipedia.org/wiki/SEDOL";EP-08, EP-10
+REQ-SEDOL-04;sedol;Boş SEDOL geçersizdir;'';ValidationError;validators==0.36.0 sedol.__doc__;EP-11
+REQ-SEDOL-05;sedol;SEDOL tam 7 karakterdir;026349;ValidationError;"London Stock Exchange SEDOL; https://en.wikipedia.org/wiki/SEDOL";BVA-01..03
+REQ-CARD_NUMBER-01;card_number;Genel kart numarası Luhn kontrolünü sağlar (ağdan bağımsız);4242424242424242;True;"validators==0.36.0 card_number.__doc__; ISO/IEC 7812-1 Ek B (Luhn)";EP-01..04
+REQ-CARD_NUMBER-02;card_number;Kart numarası yalnızca rakamdan oluşur ve boş olamaz;4242a42424242424;ValidationError;ISO/IEC 7812-1 Ek B (Luhn);EP-05, EP-06
+REQ-CARD_NUMBER-03;card_number;PAN en çok 19 basamaktır;20 basamak;ValidationError;ISO/IEC 7812-1;BVA-01..03
+REQ-VISA-01;visa;Visa numarası 4 ile başlar ve Luhn kontrolünü sağlar;4242424242424242;True;"validators==0.36.0 visa.__doc__; Kart ağı IIN aralıkları: https://en.wikipedia.org/wiki/Payment_card_number";EP-01, EP-02, EP-05, BVA-01..03
+REQ-VISA-02;visa;Visa numarası 13, 16 veya 19 basamaktır;4000000000006;True;Kart ağı IIN aralıkları: https://en.wikipedia.org/wiki/Payment_card_number;EP-03, EP-04, BVA-04..06
+REQ-MASTERCARD-01;mastercard;Mastercard numarası Luhn kontrolünü sağlar;5555555555554444;True;"validators==0.36.0 mastercard.__doc__; ISO/IEC 7812-1 Ek B (Luhn)";EP-01, EP-05
+REQ-MASTERCARD-02;mastercard;Önek 51-55 veya 2221-2720 aralığındadır;2221000000000009;True;"validators==0.36.0 mastercard.__doc__; Kart ağı IIN aralıkları: https://en.wikipedia.org/wiki/Payment_card_number";EP-02..04, EP-06, BVA-01..06
+REQ-MASTERCARD-03;mastercard;Mastercard numarası 16 basamaktır;15 basamak;ValidationError;Kart ağı IIN aralıkları: https://en.wikipedia.org/wiki/Payment_card_number;BVA-07..09
+REQ-AMEX-01;amex;Amex numarası Luhn kontrolünü sağlar;378282246310005;True;"validators==0.36.0 amex.__doc__; ISO/IEC 7812-1 Ek B (Luhn)";EP-01, EP-05
+REQ-AMEX-02;amex;Önek 34 veya 37'dir;350000000000006;ValidationError;"validators==0.36.0 amex.__doc__; Kart ağı IIN aralıkları: https://en.wikipedia.org/wiki/Payment_card_number";EP-02..04, BVA-01..06
+REQ-AMEX-03;amex;Amex numarası 15 basamaktır;16 basamak;ValidationError;Kart ağı IIN aralıkları: https://en.wikipedia.org/wiki/Payment_card_number;BVA-07..09
+REQ-DISCOVER-01;discover;Discover numarası Luhn kontrolünü sağlar;6011111111111117;True;"validators==0.36.0 discover.__doc__; ISO/IEC 7812-1 Ek B (Luhn)";EP-01, EP-05
+REQ-DISCOVER-02;discover;Önek 6011, 622126-622925, 644-649 veya 65'tir;6012000000000003;ValidationError;"validators==0.36.0 discover.__doc__; Kart ağı IIN aralıkları: https://en.wikipedia.org/wiki/Payment_card_number";EP-02..04, EP-06, BVA-01..03
+REQ-DISCOVER-03;discover;Discover numarası 16-19 basamaktır;17 basamak;True;Kart ağı IIN aralıkları: https://en.wikipedia.org/wiki/Payment_card_number;BVA-04..09
+REQ-DINERS-01;diners;Diners numarası Luhn kontrolünü sağlar;3056930009020004;True;"validators==0.36.0 diners.__doc__; ISO/IEC 7812-1 Ek B (Luhn)";EP-01, EP-05
+REQ-DINERS-02;diners;Önek 300-305, 36 veya 38-39'dur;30600000000001;ValidationError;"validators==0.36.0 diners.__doc__; Kart ağı IIN aralıkları: https://en.wikipedia.org/wiki/Payment_card_number";EP-02..04, EP-06, BVA-01..06
+REQ-DINERS-03;diners;Diners numarası 14-19 basamaktır;13 basamak;ValidationError;Kart ağı IIN aralıkları: https://en.wikipedia.org/wiki/Payment_card_number;BVA-07..09
+REQ-JCB-01;jcb;JCB numarası Luhn kontrolünü sağlar;3566002020360505;True;"validators==0.36.0 jcb.__doc__; ISO/IEC 7812-1 Ek B (Luhn)";EP-01, EP-04
+REQ-JCB-02;jcb;Önek 3528-3589 aralığındadır;3590000000000000;ValidationError;"validators==0.36.0 jcb.__doc__; Kart ağı IIN aralıkları: https://en.wikipedia.org/wiki/Payment_card_number";EP-02, BVA-01..06
+REQ-JCB-03;jcb;JCB numarası 16-19 basamaktır;19 basamak;True;Kart ağı IIN aralıkları: https://en.wikipedia.org/wiki/Payment_card_number;EP-03, BVA-07..09
+REQ-UNIONPAY-01;unionpay;UnionPay numarası Luhn kontrolünü sağlar;6200000000000005;True;"validators==0.36.0 unionpay.__doc__; ISO/IEC 7812-1 Ek B (Luhn)";EP-01, EP-04
+REQ-UNIONPAY-02;unionpay;Önek 62'dir;6300000000000004;ValidationError;"validators==0.36.0 unionpay.__doc__; Kart ağı IIN aralıkları: https://en.wikipedia.org/wiki/Payment_card_number";EP-02, BVA-01..03
+REQ-UNIONPAY-03;unionpay;UnionPay numarası 16-19 basamaktır;19 basamak;True;Kart ağı IIN aralıkları: https://en.wikipedia.org/wiki/Payment_card_number;EP-03, BVA-04..06
+REQ-MIR-01;mir;Mir numarası Luhn kontrolünü sağlar;2200123456789019;True;"validators==0.36.0 mir.__doc__; ISO/IEC 7812-1 Ek B (Luhn)";EP-01, EP-03
+REQ-MIR-02;mir;Önek 2200-2204 aralığındadır;2205000000000009;ValidationError;"validators==0.36.0 mir.__doc__; Kart ağı IIN aralıkları: https://en.wikipedia.org/wiki/Payment_card_number; NSPK";EP-02, BVA-01..06
+REQ-MIR-03;mir;Mir numarası 16-19 basamaktır;15 basamak;ValidationError;Kart ağı IIN aralıkları: https://en.wikipedia.org/wiki/Payment_card_number;BVA-07..09

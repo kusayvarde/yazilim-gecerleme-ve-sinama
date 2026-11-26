@@ -1,7 +1,7 @@
 """ind_aadhar ve ind_pan - kolay (1'er puan). EP + BVA.
 
 Aadhaar (UIDAI): 12 basamak, ilk basamak 2-9 (0 ve 1 olamaz), son basamak Verhoeff kontrol basamağıdır.
-Test verisi tests/domains_formats/uretici.py'deki Verhoeff üreticisiyle, kütüphaneden bağımsız üretilir.
+Test verisi uretici/domains_formats.py'deki Verhoeff üreticisiyle, kütüphaneden bağımsız üretilir.
 PAN (Gelir Vergisi İdaresi): AAAAA9999A = 5 harf + 4 rakam + 1 harf, büyük harf.
 Not: 4. harfin (sahip türü) denetimi doküman örneğiyle ('ABCDE9999K', 4. harf D) çeliştiği için
 test edilmez; raporda gereksinim belirsizliği olarak belirtilir.
@@ -9,8 +9,9 @@ test edilmez; raporda gereksinim belirsizliği olarak belirtilir.
 
 import pytest
 
-from tests.domains_formats.uretici import aadhaar_uret, bosluklu, verhoeff_kontrol_basamagi
-from tests.yardimci import I, V, karakter_degistir, tc
+from uretici.domains_formats import aadhaar_uret, bosluklu, verhoeff_kontrol_basamagi
+from tests.yardimci import I, V, tc
+from uretici.ortak import karakter_degistir
 
 
 def _uret(govde: str) -> str:

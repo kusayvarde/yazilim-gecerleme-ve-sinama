@@ -1,9 +1,9 @@
 """D1, D3, D4 tasarım diyagramlarını çizer (matplotlib).
 
 Kullanım:  uv run python scripts/diyagramlar.py
-Çıktı:     docs/diyagramlar/D1_kara_kutu_modeli.png
-           docs/diyagramlar/D3_esdegerlik_bolumleme.png
-           docs/diyagramlar/D4_sinir_deger_sayi_dogrusu.png
+Çıktı:     docs/diyagramlar/network_crypto/D1_kara_kutu_modeli.png
+           docs/diyagramlar/network_crypto/D3_esdegerlik_siniflari.png
+           docs/diyagramlar/network_crypto/D4_sinir_degerleri.png
 
 Diyagramlar test tasarımını (T2 sınıfları, T3 sınırları) gösterir; test sonucuna
 bağlı değildir. Sınıf kodları ve Test ID'leri test dosyalarındakiyle aynıdır.
@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch  # noqa: E402
 
 KOK = Path(__file__).resolve().parent.parent
-HEDEF = KOK / "docs" / "diyagramlar"
+HEDEF = KOK / "docs" / "diyagramlar" / "network_crypto"
 
 YESIL, YESIL_ACIK = "#2e7d32", "#e8f5e9"
 KIRMIZI, KIRMIZI_ACIK = "#c62828", "#ffebee"
@@ -159,7 +159,7 @@ def d3():
              "Dokümandaki örnekler ayrıca 'Doküman örneği' sınıfıyla test edilir.",
              ha="center", fontsize=9.5, color=GRI, style="italic")
     fig.tight_layout(rect=(0, 0.015, 1, 0.98))
-    kaydet(fig, "D3_esdegerlik_bolumleme.png")
+    kaydet(fig, "D3_esdegerlik_siniflari.png")
 
 
 # ---------------------------------------------------------------- D4
@@ -217,7 +217,7 @@ def d4():
              "İki taraflı aralıkta 6 test: min−1, min, min+1, maks−1, maks, maks+1",
              ha="center", fontsize=9.5, color=GRI, style="italic")
     fig.tight_layout(rect=(0, 0.03, 1, 0.97))
-    kaydet(fig, "D4_sinir_deger_sayi_dogrusu.png")
+    kaydet(fig, "D4_sinir_degerleri.png")
 
 
 def kaydet(fig, ad):

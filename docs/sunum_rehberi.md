@@ -85,7 +85,7 @@ proje/
 ├── uv.lock                     ② exact locked versions
 ├── conftest.py                 ③ shared "dogrula" (verify) fixture
 ├── tests/
-│   ├── yardimci.py             ④ tc() helper + standard-based data generators
+│   ├── yardimci.py             ④ tc() helper (+ V / I)
 │   └── network_crypto/         ⑤ my area: the test files
 │       ├── test_ipv4.py
 │       ├── test_ipv6.py
@@ -93,12 +93,14 @@ proje/
 │       ├── test_crypto_addresses.py   (btc, eth, trx, bsc)
 │       ├── test_mac_uuid.py
 │       └── test_hashes.py             (6 hashes in one file)
+├── uretici/                    ④b standard-based test data (üretici), one module per area
 ├── scripts/
 │   ├── sonuc_tablosu.py        ⑥ XML → tablolar.xlsx (all tables) + T4/T5 CSV
-│   └── sonuc_grafigi.py        ⑦ T5 → D5 chart (PNG)
+│   ├── sonuc_grafigi.py        ⑦ T5 → D5 chart (PNG)
+│   └── rapor_uret.py           ⑦b fills each area report's automatic blocks + D1–D5
 ├── docs/
-│   ├── tablolar/               ⑧ hand-written tables: T1 requirements, T6 findings
-│   └── diyagramlar/            ⑨ diagrams (D2 flowchart in Mermaid)
+│   ├── tablolar/<area>/        ⑧ hand-written tables: T1_gereksinimler.csv, T6_bulgular.csv
+│   └── diyagramlar/<area>/     ⑨ D1–D5 diagrams per area (network_crypto D2 in Mermaid)
 └── reports/                    ⑩ generated outputs (not in git)
 ```
 
@@ -107,11 +109,11 @@ proje/
 | ① | `pyproject.toml` | Pins `validators[crypto-eth-addresses]==0.36.0`. Holds the pytest config (`addopts`, `junit_family`, `xfail_strict`, markers). | **Results can change between library versions.** The whole team must use the same version. `eth_address` only works with the `crypto-eth-addresses` extra. With the options set here, everyone runs the same single command. |
 | ② | `uv.lock` | Locks every package version exactly. | Reproducibility: the same results on every machine. |
 | ③ | `conftest.py` | Defines the `dogrula` fixture: it calls the function, records the data, then asserts. | One shared verification rule for the whole team. It also records input, expected and actual into the XML so the tables can be built automatically. |
-| ④ | `tests/yardimci.py` | `tc(...)` = one test case. It also builds valid addresses from the **standards** (Base58Check, EIP-55). | Keeps test files short and uniform. Our "valid" data is verified independently of the library, so a library bug can't hide behind wrong data. |
+| ④ | `tests/yardimci.py` | `tc(...)` = one test case. Valid data is built separately in `uretici/` from the **standards** (Base58Check, EIP-55, Luhn, IBAN…). | Keeps test files short and uniform; test data code stays outside `tests/`. Our "valid" data is verified independently of the library, so a library bug can't hide behind wrong data. |
 | ⑤ | test files | One file per function or function group. | Matches the guide's §7 layout and makes ownership clear. |
 | ⑥ | `sonuc_tablosu.py` | Reads `reports/sonuc.xml` and writes **`reports/tablolar.xlsx`**, a formatted Excel file with one sheet per table (see section 6.4). T2, T3 and T4a are **derived from the test code**, so they can never disagree with it. It also **checks traceability**: every Test ID listed in T1 must exist, and every test must belong to at least one requirement (otherwise it exits with an error). | The guide says "Actual" and "Status" must **not** be filled by hand. Automating them prevents copy errors. |
 | ⑦ | `sonuc_grafigi.py` | Draws D5: PASS/XFAIL/FAIL per function, and the EP/BVA/DT split. | A result chart is required in the report (§9). |
-| ⑧ | `docs/tablolar/` | T1 (54 requirements, one per row, each with a `REQ-<FONK>-<no>` ID and the tests that cover it) and T6 (findings + root-cause analysis). | These need human judgment, so they are written by hand. |
+| ⑧ | `docs/tablolar/<area>/` | T1 (54 requirements, one per row, each with a `REQ-<FONK>-<no>` ID and the tests that cover it) and T6 (findings + root-cause analysis). | These need human judgment, so they are written by hand. |
 | ⑩ | `reports/` | `sonuc.xml`, `rapor.html`, `tablolar.xlsx`, T4/T5 CSV, D5 PNG. | Regenerated on every run, so they are git-ignored. |
 
 ---
@@ -254,9 +256,9 @@ If `tablolar.xlsx` is open in Excel, Windows locks it; the script then writes `t
 
 When a test fails, first ask: **is my test wrong, or is the library wrong?**
 1. Compare the expected value with the requirement again (docs/standard).
-2. Verify the test data (e.g. is the address really valid? Check it with our EIP-55/Base58Check generators).
+2. Verify the test data (e.g. is the address really valid? Check it with our EIP-55/Base58Check üretici functions in `uretici/`).
 3. If the data is correct and the library returns something else, it is a **finding**.
-4. **Don't delete the test.** Mark it with `tc(..., bug="BUG-xx: ...")`. It becomes a strict xfail, shows up in the reports, and gets a row in `docs/tablolar/T6_network_crypto.csv`.
+4. **Don't delete the test.** Mark it with `tc(..., bug="BUG-xx: ...")`. It becomes a strict xfail, shows up in the reports, and gets a row in `docs/tablolar/network_crypto/T6_bulgular.csv`.
 
 ```
 FAIL ─► is the expected value / test data correct?
@@ -318,7 +320,7 @@ False
 ## 11. Likely questions and answers
 
 **Q: How do you know you didn't look at the source code?**
-A: All expectations come from the docs and standards. `T1_network_crypto.csv` has a "Kuralın kaynağı" (rule source) column that says, for each function, which part comes from the docstring and which from a standard. All 15 docstrings were checked against it. Failures were analyzed by calling the function and reading the docstring only. Valid crypto data is generated by our own standard implementations in `yardimci.py`.
+A: All expectations come from the docs and standards. `network_crypto/T1_gereksinimler.csv` has a "Kuralın kaynağı" (rule source) column that says, for each function, which part comes from the docstring and which from a standard. All 15 docstrings were checked against it. Failures were analyzed by calling the function and reading the docstring only. Valid crypto data is generated by our own standard implementations in `yardimci.py`.
 
 **Q: Why not `pytest.raises`?**
 A: The library doesn't raise on invalid input. It returns a falsy `ValidationError`. We also assert the type, so a wrong falsy value (e.g. `False` or `None`) would still fail the test.

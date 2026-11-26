@@ -2,13 +2,14 @@
 
 Beklentiler dokümandan ve standartlardan türetilmiştir: ISO 3166-1 (alpha-2, alpha-3, numeric),
 ISO 4217, ISO 13616 (IBAN, mod-97-10), ITU-T E.164 (ülke çağrı kodu 1-3 basamak).
-IBAN test verisi tests/domains_formats/uretici.py ile standarda göre üretilir.
+IBAN test verisi uretici/domains_formats.py ile standarda göre üretilir.
 """
 
 import pytest
 
-from tests.domains_formats.uretici import iban_uret
-from tests.yardimci import I, V, karakter_degistir, tc
+from uretici.domains_formats import iban_uret
+from tests.yardimci import I, V, tc
+from uretici.ortak import karakter_degistir
 
 # =============================================================== country_code
 COUNTRY_EP = [

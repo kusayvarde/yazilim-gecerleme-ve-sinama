@@ -1,12 +1,14 @@
 """btc_address, eth_address, trx_address (zor, 3'er puan) ve bsc_address (kolay, 1 puan).
 
 Test verileri standartlara göre üretildi/doğrulandı: Base58Check (BTC/TRX),
-BIP-173 bech32 örnekleri (SegWit), EIP-55 (ETH). Bkz. tests/yardimci.py.
+BIP-173 bech32 örnekleri (SegWit), EIP-55 (ETH). Bkz. uretici/network_crypto.py.
 """
 
 import pytest
 
-from tests.yardimci import I, V, eip55, karakter_degistir, tc, trx_adresi
+from tests.yardimci import I, V, tc
+from uretici.network_crypto import eip55, trx_adresi
+from uretici.ortak import karakter_degistir
 
 # --------------------------------------------------------------------------- BTC
 BTC_P2SH = "3Cwgr2g7vsi1bXDUkpEnVoRLA9w4FZfC69"           # doküman örneği

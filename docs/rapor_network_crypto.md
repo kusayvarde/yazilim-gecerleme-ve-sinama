@@ -48,7 +48,7 @@ karar tablosu), kolay fonksiyonlara daha az test yazılmıştır.
 
 Fonksiyonlar yalnızca **girdi ve çıktıları** üzerinden test edilmiştir (D1).
 
-![D1 – Kara-kutu modeli](diyagramlar/D1_kara_kutu_modeli.png)
+![D1 – Kara-kutu modeli](diyagramlar/network_crypto/D1_kara_kutu_modeli.png)
 
 > **Kaynak koda bakılmamıştır.** Ne `.venv` içindeki kütüphane kodu ne de GitHub'daki kaynak
 > kod okunmuştur. Beklenen sonuçlar yalnızca şu kaynaklardan türetilmiştir:
@@ -58,7 +58,7 @@ Fonksiyonlar yalnızca **girdi ve çıktıları** üzerinden test edilmiştir (D
 >
 > Başarısız testler de yalnızca fonksiyon çağrılıp docstring okunarak analiz edilmiştir.
 > Geçerli kripto test verisi kütüphaneden bağımsız olarak, standartları uygulayan kendi
-> üreticilerimizle (`tests/yardimci.py`: `base58check`, `trx_adresi`, `eip55`) doğrulanmıştır.
+> üreticilerimizle (`uretici/ortak.py`: `base58check`; `uretici/network_crypto.py`: `trx_adresi`, `eip55`) doğrulanmıştır.
 
 **Kütüphanenin sözleşmesi:** Geçersiz girdide istisna **fırlatılmaz**; fonksiyon `False` gibi
 davranan (falsy) bir `ValidationError` nesnesi **döndürür**. Bu nedenle testlerde
@@ -103,7 +103,7 @@ flowchart LR
     I --> K
 ```
 
-*D2 – Test süreci akış diyagramı (kaynak: `diyagramlar/D2_test_sureci.mmd`; Word'e eklemek
+*D2 – Test süreci akış diyagramı (kaynak: `diyagramlar/network_crypto/D2_test_sureci.mmd`; Word'e eklemek
 için mermaid.live üzerinden PNG'ye çevrilebilir).*
 
 ---
@@ -196,7 +196,7 @@ D3, en karmaşık iki fonksiyonun (ipv4, ipv6) girdi uzayının geçerli ve geç
 ayrılmasını gösterir. Parametreli sınıflar (ör. `private=False` + private adres) da ayrı
 bölgedir; çünkü aynı adres parametreye göre geçerli veya geçersiz olabilir.
 
-![D3 – Eşdeğerlik bölümleme diyagramı](diyagramlar/D3_esdegerlik_bolumleme.png)
+![D3 – Eşdeğerlik bölümleme diyagramı](diyagramlar/network_crypto/D3_esdegerlik_siniflari.png)
 
 Tablo 2 her fonksiyonun sınıflarını ve temsilci değerini verir (V = geçerli, I = geçersiz,
 DOK = doküman örneği). Altı hash fonksiyonu yalnızca uzunluk N'de farklılaştığı için tek tabloda
@@ -410,7 +410,7 @@ D4, üç sayısal sınırı sayı doğrusu üzerinde gösterir: ipv4 okteti (0�
 (/0–/32) ve cron dakika alanı (0–59). Sınırlar hem alt hem üst uçta SD−1 / SD / SD+1 ile
 test edilmiştir.
 
-![D4 – Sınır değer sayı doğrusu](diyagramlar/D4_sinir_deger_sayi_dogrusu.png)
+![D4 – Sınır değer sayı doğrusu](diyagramlar/network_crypto/D4_sinir_degerleri.png)
 
 Sınırlar iki türdür:
 - **Sayısal değer sınırları:** oktet, CIDR öneki (ipv4 /32, ipv6 /128), cron alanları
@@ -507,7 +507,8 @@ konsol çıktısında, HTML raporda ve tablolarda birebir aynıdır.
 
 ```
 conftest.py                  ortak `dogrula` fixture'ı (çağır + XML'e kaydet + doğrula)
-tests/yardimci.py            tc() senaryo tanımı + Base58Check / EIP-55 veri üreticileri
+tests/yardimci.py            tc() senaryo tanımı ve V / I sabitleri
+uretici/network_crypto.py    TRON (Base58Check) / EIP-55 veri üreticileri (uretici/ortak.py ile)
 tests/network_crypto/        test_ipv4.py, test_ipv6.py, test_cron.py,
                              test_crypto_addresses.py, test_mac_uuid.py, test_hashes.py
 scripts/sonuc_tablosu.py     JUnit XML -> tablolar.xlsx (T1–T6) + izlenebilirlik denetimi
@@ -604,7 +605,7 @@ gerçek bulguya karşılık gelir (Bölüm 9). Beklenmeyen başarısızlık (FAI
 | sha512 | 13 | 10 | 3 | 0 | 13 | 0 | 0 | 100 |
 | TOPLAM | 310 | 190 | 112 | 8 | 302 | 0 | 8 | 97.4 |
 
-![D5 – Sonuç grafiği](diyagramlar/D5_sonuc_grafigi.png)
+![D5 – Sonuç grafiği](diyagramlar/network_crypto/D5_sonuc_grafigi.png)
 
 *D5 – Fonksiyon başına PASS/XFAIL/FAIL ve EP/BVA/DT dağılımı (`scripts/sonuc_grafigi.py`).*
 

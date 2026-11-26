@@ -6,5 +6,5 @@ All project rules for agents live in AGENTS.md (shared by every AI tool the team
 
 ## Claude Code notes
 
-- The `tc` / `dogrula` pipeline details: `tests/yardimci.py`, root `conftest.py`, `scripts/sonuc_tablosu.py`.
+- The `tc` / `dogrula` pipeline details: `tests/yardimci.py`, root `conftest.py`, `scripts/sonuc_tablosu.py`; test data in `uretici/`; area reports via `scripts/rapor_uret.py`.
 - On this Windows machine the console codepage is cp1256: run Python/pytest with `PYTHONIOENCODING=utf-8`.

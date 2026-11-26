@@ -24,7 +24,7 @@ Code identifiers, table contents and the report are in **Turkish**; keep new wor
 
 Area 1 is **done — use `tests/network_crypto/` and its tables/report as the reference example.**
 Your branch is named after your GitHub username (e.g. `AFAHMAD1`); your files use your area name
-(e.g. `tests/domains_formats/`, `docs/tablolar/T1_domains_formats.csv`, `docs/rapor_domains_formats.md`).
+(e.g. `tests/domains_formats/`, `docs/tablolar/domains_formats/T1_gereksinimler.csv`, `docs/rapor_domains_formats.md`).
 
 Note: `between` and `length` take keyword-only `min_val` / `max_val` arguments — pass them as keyword
 parameters in `tc(...)` (e.g. `tc(..., min_val=1, max_val=5)`). Check each function's docstring and
@@ -37,15 +37,14 @@ parameters in `tc(...)` (e.g. `tc(..., min_val=1, max_val=5)`). Check each funct
    published docs and docstring (`python -c "import validators; print(validators.<fn>.__doc__)"`)
    and the relevant standard (RFCs, ISO, Luhn, IBAN, …). To analyse a failing test, call the function
    and compare with the docstring/standard. The report must state that the source was not consulted.
-2. **Stay in your own area.** Only create or edit files in your own `tests/<area>/`,
-   `docs/tablolar/T1_<area>.csv`, `docs/tablolar/T6_<area>.csv`, `docs/rapor_<area>.md` and your own
-   diagrams. The **shared files** below are changed only after telling the team (they affect
-   everyone's results): `conftest.py`, `tests/yardimci.py`, `scripts/*`, `pyproject.toml`, `uv.lock`,
+2. **Stay in your own area.** Only create or edit files in your own `tests/<area>/`, `uretici/<area>.py`,
+   `docs/tablolar/<area>/`, `docs/diyagramlar/<area>/` and `docs/rapor_<area>.md`. The **shared files** below are changed only after telling the team (they affect
+   everyone's results): `conftest.py`, `tests/yardimci.py`, `uretici/ortak.py`, `scripts/*`, `pyproject.toml`, `uv.lock`,
    `AGENTS.md`, `CLAUDE.md`, `README.md`.
 3. **Never delete or weaken a failing test.** Decide: is the test wrong, or the library?
    - Test data/expectation wrong according to docs/standard → fix the test.
    - Test is correct but the library disagrees → it is a **finding**: add `bug="BUG-xx: …"` to the
-     `tc(...)` (becomes a strict xfail) and add a row to your `T6_<area>.csv`.
+     `tc(...)` (becomes a strict xfail) and add a row to your `docs/tablolar/<area>/T6_bulgular.csv`.
 4. **Never use `pytest.raises`.** The library does not raise on invalid input; it returns a falsy
    `ValidationError`. The shared `dogrula` fixture already asserts the contract.
 5. **Never fill "Gerçekleşen" (actual) or "Durum" (status) by hand** — they are generated from pytest.
@@ -65,6 +64,7 @@ uv run pytest -k "TC-IPV4-BVA-03"               # one test case, by Test ID
 uv run python scripts/sonuc_tablosu.py          # → reports/tablolar.xlsx (T1–T6) + traceability check
 uv run python scripts/sonuc_grafigi.py          # → reports/D5_sonuc_grafigi.png (after sonuc_tablosu.py)
 uv run python scripts/diyagramlar.py            # network_crypto D1/D3/D4 diagrams
+uv run python scripts/rapor_uret.py [<area>]     # fill OTOMATIK blocks + T6 actuals + D1–D5 of docs/rapor_<area>.md
 ```
 
 `-v`, JUnit XML and HTML report options are in `addopts` in `pyproject.toml`. On Windows consoles
@@ -118,8 +118,10 @@ def test_email(dogrula, girdi, parametreler, beklenen):
   (min−1, min, min+1, max−1, max, max+1).
 - **BVA label format is parsed by the table script** — it must be
   `<boundary name> SD-1|SD|SD+1 [(value)]`, e.g. `"Dakika üst SD+1 (60)"`. Other formats break T3.
-- Valid test data must be checked against the standard, independently of the library (write a small
-  generator in your own test file, or propose one for `tests/yardimci.py`).
+- Valid test data must be checked against the standard, independently of the library. Put the data
+  "üretici" (generator) in `uretici/<area>.py` — never inside `tests/` — with an `ornekleri_dogrula()`
+  self-check; cross-area helpers (Base58, `karakter_degistir`) live in `uretici/ortak.py`.
+  Use the name *üretici* everywhere (not "üreteç" or "generator").
 - Spread effort by difficulty/points: very hard ≈ 20–30 tests, hard ≈ 12–18, easy ≈ 6–10.
 
 ## Tables and traceability
@@ -127,11 +129,11 @@ def test_email(dogrula, girdi, parametreler, beklenen):
 Hand-written tables, **one file per area** (the script merges all of them, so teammates never edit
 the same file):
 
-- `docs/tablolar/T1_<area>.csv` — requirements, one row per rule. Header (must be identical):
+- `docs/tablolar/<area>/T1_gereksinimler.csv` — requirements, one row per rule. Header (must be identical):
   `ID;Fonksiyon;Gereksinim;Örnek girdi;Beklenen çıktı;Kaynak;Sınayan testler`.
   ID = `REQ-<FONK>-<no>`. The last column lists covering tests in short form
   (`EP-01, EP-03, BVA-01..03`), expanded with the function prefix.
-- `docs/tablolar/T6_<area>.csv` — findings. Header:
+- `docs/tablolar/<area>/T6_bulgular.csv` — findings. Header:
   `Bulgu ID;Test ID;Girdi;Beklenen;Gerçekleşen;Kök neden yorumu;Önem`.
 - **Bug ID ranges** (so IDs never collide): network_crypto `BUG-01…19`, teammate 2 `BUG-20…39`,
   teammate 3 `BUG-40…59`, teammate 4 `BUG-60…79`. Non-bug observations: `GÖZLEM-<no>` in the same ranges.
@@ -145,7 +147,10 @@ the same file):
 Each person writes `docs/rapor_<area>.md` following the 10-section outline in the PDF (Kapsam,
 Yöntem, Gereksinimler, Eşdeğerlik sınıfları, Sınır değer analizi, Test senaryoları, Otomasyon,
 Sonuçlar, Bulgular, Değerlendirme). `docs/rapor_network_crypto.md` is the reference example.
-Diagrams go in `docs/diyagramlar/`.
+Diagrams go in `docs/diyagramlar/<area>/` with the shared names `D1_kara_kutu_modeli.png`,
+`D2_test_sureci.png`, `D3_esdegerlik_siniflari.png`, `D4_sinir_degerleri.png`, `D5_sonuc_grafigi.png`
+(`scripts/rapor_uret.py <area>` draws them). Tables follow the same per-area layout:
+`docs/tablolar/<area>/T1_gereksinimler.csv` and `T6_bulgular.csv`.
 
 ## Git workflow
 

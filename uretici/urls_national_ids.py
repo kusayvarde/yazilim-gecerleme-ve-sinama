@@ -70,10 +70,6 @@ def inn_uret(govde="783000229"):
     return ilk + kontrol(ilk, (3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8))
 
 
-def son_basamak_boz(metin):
-    return metin[:-1] + str((int(metin[-1]) + 1) % 10)
-
-
 def ornekleri_dogrula():
     """Yayımlanmış sabit örneklerle üretici hesaplarını çapraz kontrol eder."""
     assert nif_uret("26643189") == "26643189N"
@@ -84,3 +80,8 @@ def ornekleri_dogrula():
     assert nir_uret(bosluk=True) == "1 84 12 76 451 089 46"
     assert inn_uret() == "7830002293"
     assert inn_uret("5001007322") == "500100732259"
+
+
+if __name__ == "__main__":
+    ornekleri_dogrula()
+    print("Üreticiler docstring ve bilinen örneklerle uyumlu.")

@@ -71,8 +71,20 @@ def bosluklu(aadhaar: str) -> str:
 
 
 # --- Kendi kendine doğrulama: üreticiler bilinen örneklerle uyuşmalı ----------
-assert verhoeff_kontrol_basamagi("236") == "3"            # Verhoeff'in klasik örneği (2363)
-assert verhoeff_dogru_mu("2363") and not verhoeff_dogru_mu("2364")
-assert iban_uret("DE", "370400440532013000") == "DE89370400440532013000"
-assert iban_uret("GB", "WEST12345698765432") == "GB82WEST12345698765432"
-assert iban_mod97_dogru_mu("DE89370400440532013000")
+
+
+def ornekleri_dogrula():
+    """Üreticileri bilinen örneklerle karşılaştırır."""
+    assert verhoeff_kontrol_basamagi("236") == "3"            # Verhoeff'in klasik örneği (2363)
+    assert verhoeff_dogru_mu("2363") and not verhoeff_dogru_mu("2364")
+    assert iban_uret("DE", "370400440532013000") == "DE89370400440532013000"
+    assert iban_uret("GB", "WEST12345698765432") == "GB82WEST12345698765432"
+    assert iban_mod97_dogru_mu("DE89370400440532013000")
+
+
+# İçe aktarımda da çalışır: yanlış üretici sessizce yanlış test verisi üretemez.
+ornekleri_dogrula()
+
+
+if __name__ == "__main__":
+    print("Üreticiler bilinen örneklerle uyumlu.")

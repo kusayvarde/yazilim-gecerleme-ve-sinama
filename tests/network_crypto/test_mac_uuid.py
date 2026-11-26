@@ -8,7 +8,7 @@ from tests.yardimci import I, V, tc
 
 UUID_STR = "2bc1c94f-0deb-43e9-92a1-4775189ec9f8"   # doküman örneği
 
-# Bulgular (docs/tablolar/T6_network_crypto.csv)
+# Bulgular (docs/tablolar/network_crypto/T6_bulgular.csv)
 BUG_02 = "BUG-02: doküman 'UUID-v4' diyor ama v4 olmayan UUID'ler (v1, nil) kabul ediliyor"
 BUG_03 = "BUG-03: 8-4-4-4-12 biçimi zorlanmıyor; tiresiz, {...} ve urn:uuid: biçimleri kabul ediliyor"
 BUG_04 = "BUG-04: tire konumu denetlenmiyor; tireler herhangi bir yerde olabilir"
